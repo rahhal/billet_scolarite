@@ -1,0 +1,567 @@
+{% if typeMacro == 'macro_boutton' %}
+    <a href="{{ path }}" class="btn btn-xs {{ color }} tooltips" data-placement="top" data-original-title="{{ texte }}"
+       {% if alert is not null %}onclick="javascript:return(confirm('{{ alert }}'))"{% endif %}>
+        <i class="fa {{ icon }}"></i> {{ texte }} </a>
+{% endif %}
+{% if typeMacro == 'macro_bouttonBlank' %}
+    <a href="{{ path }}" target="_blank" class="btn btn-xs {{ color }} tooltips" data-placement="top"
+       data-original-title="{{ texte }}">
+        <i class="fa {{ icon }}"></i> {{ texte }}</a>
+{% endif %}
+{% if typeMacro == 'macro_bouttonModal' %}
+    <a href="{{ path }}" data-toggle="modal" data-id="{{ id }}" class=" {{ color }} tooltips" data-placement="top"
+       data-original-title="{{ texte }}">
+        <i class="fa {{ icon }}"></i> {{ texte }} </a>
+{% endif %}
+{% if typeMacro == 'macro_bouttonModalTow' %}
+    <a href="{{ path }}" data-toggle="modal" data-action="{{ action }}" data-id="{{ id }}"
+       class=" bouttonModalTow {{ color }} tooltips" data-placement="top" data-original-title="{{ texte }}">
+        <i class="fa {{ icon }}"></i> {{ texte }} </a>
+{% endif %}
+{% if typeMacro == 'macro_tablePassword' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Modifier mot de passe"><i class="fa fa-lock"></i></a>
+{% endif %}
+
+{% if typeMacro == 'macro_tableReload' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Reload"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir reactiver cet hôtel ?'))"><i
+                class="fa fa-mail-reply-all fa fa-white"></i></a>
+{% endif %}
+
+{% if typeMacro == 'macro_saisonAmicaleGenerer' %}
+    <a href="{{ path }}" data-placement="top" title="Gênere saisons amicale"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir gênerer des saisons amicales ?'))"><i
+                class="fa fa-refresh fa fa-white"></i> Saisons Amicale</a>
+{% endif %}
+
+{% if typeMacro == 'macro_tableValider' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Valider"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir valider cette facture ?'))"><i
+                class="fa fa-check fa-white"></i>Valider</a>
+{% endif %}
+
+{% if typeMacro == 'macro_tableStopSales' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Stop Sales"><i class="fa fa-clock-o fa fa-white"></i></a>
+{% endif %}
+
+{% if typeMacro == 'macro_tableDelete' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Supprimer"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir supprimer cette ligne ?'))"><i
+                class="fa fa-times fa fa-white"></i>Supprimer</a>
+{% endif %}
+
+{% if typeMacro == 'macro_tableClone' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Cloner"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir cloner cette ligne ?'))"><i
+                class="fa fa-files-o fa fa-white"></i>Clone</a>
+{% endif %}
+
+{% if typeMacro == 'macro_generate' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Frais chambre"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir faire cette action ?'))"><i
+                class="fa fa-share"></i></a>
+{% endif %}
+
+{% if typeMacro == 'macro_generateTarif' %}
+    <a href="{{ path }}" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Tarif chambre"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir faire cette action ?'))"><i
+                class="fa fa-cogs"></i></a>
+{% endif %}
+
+{% if typeMacro == 'macro_returnPiece' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Retourner la Pièce"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir retourner cette pièce au client ?'))"><i
+                class="fa fa-mail-reply"></i>Retourner</a>
+{% endif %}
+
+{% if typeMacro == 'macro_tableEdit' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Modifier"><i class="fa fa-edit"></i>Modifier</a>
+{% endif %}
+
+{% if typeMacro == 'macro_addLigneToEncaissement' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Modifier"><i class="fa fa-add"></i>Modifier</a>
+{% endif %}
+
+{% if typeMacro == 'macro_tablePdf' %}
+    <a href="{{ path }}" target="_blank" data-placement="top" data-original-title="PDF"><i class="fa fa-file-pdf-o"></i></a>
+{% endif %}
+
+{% if typeMacro == 'macro_tablePhoto' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Photos"><i class="fa fa-camera"></i>Ajouter image</a>
+{% endif %}
+
+{% if typeMacro == 'macro_albumPhoto' %}
+    <div class="col-md-2 col-sm-4 gallery-img">
+        <div class="wrap-image">
+            <a class="group1 cboxElement" href="javascript:void(0)">
+                <img src="{{ asset(image.getAssetPath) }}" class="img-responsive"> </a>
+            <div class="tools tools-bottom">
+                <a href="{{ path('deletephoto',{'id':image.id}) }}"
+                   onclick="javascript:return(confirm('Etes-vous certain de vouloir supprimer cette photo ?'))">
+                    <i class="clip-close-2"></i>
+                    {{ image.showType }}, Ordre : {{ image.ordre }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if typeMacro == 'macro_bouttonValider' %}
+
+    <a href="{{ path }}"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir valider cette {{ label }} ?'))"
+       class="btn border-success btn-xs heading-btn text-slate-800 btn-flat"><i class="fa fa-check position-left"></i>
+        Valider</a>
+{% endif %}
+{% if typeMacro == 'macro_bouttonFacturer' %}
+
+    <a href="{{ path }}" class="btn border-success btn-xs heading-btn text-slate-800 btn-flat"><i
+                class="fa fa-check position-left"></i> Facturer</a>
+{% endif %}
+{% if typeMacro == 'macro_bouttonImpayer' %}
+
+    <a href="{{ path }}" class="btn border-success btn-xs heading-btn text-slate-800 btn-flat"><i
+                class="fa fa-check position-left"></i> Rattacher à un fournisseur</a>
+{% endif %}
+
+{% if typeMacro == 'macro_bouttonSupprimer' %}
+
+    <a href="{{ path }}"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir supprimer cette {{ label }} ?'))"
+       class="btn border-danger btn-xs heading-btn text-slate-800 btn-flat btn-xs"><i
+                class="fa fa-trash-o position-left"></i> Supprimer</a>
+{% endif %}
+{% if typeMacro == 'macro_bouttonAnnuler' %}
+
+    <a href="{{ path }}"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir annuler cette réservation ?'))"
+       class="btn border-warning btn-xs heading-btn text-slate-800 btn-flat btn-xs "><i
+                class="fa fa-close position-left"></i> Annuler</a>
+{% endif %}
+{% if typeMacro == 'macro_bouttonPaiement' %}
+
+    <a href="{{ path }}" class="btn border-info btn-xs heading-btn text-slate-800 btn-flat"><i
+                class="fa fa-money position-left"></i> Payement</a>
+{% endif %}
+{% if typeMacro == 'macro_bouttonModifier' %}
+
+    <a href="{{ path }}" data-toggle="modal" class="btn border-info btn-xs heading-btn text-slate-800 btn-flat"><i
+                class="fa fa-pencil position-left"></i> {{ label }}</a>
+{% endif %}
+
+{% if typeMacro == 'macro_bouttonRecu' %}
+
+    <a href="{{ path }}" class="btn border-success btn-xs heading-btn text-slate-800 btn-flat" target="_blank"><i
+                class="fa fa-check position-left"></i> Reçu</a>
+{% endif %}
+
+{% if typeMacro == 'macro_bouttonPriseCharge' %}
+
+    <a href="{{ path }}"
+       onclick="javascript:return(confirm('Etes-vous certain de vouloir prendre en charge cette reservation ?'))"
+       class="btn border-success btn-xs heading-btn text-slate-800 btn-flat"><i class="fa fa-check position-left"></i>
+        Prendre en charge cette réservation</a>
+{% endif %}
+
+{% if typeMacro == 'macro_PayerPiece' %}
+    <a href="{{ path }}" data-placement="top" data-original-title="Payer cette piece"><i
+                class="fa fa-dollar position-left"></i> Payer cette piece</a>
+
+{% endif %}
+
+{% spaceless %}
+    {% if typeMacro == 'form_text' %}
+        <div class="{{ class }}">
+            <div class="form-group">
+                {% if label is not null %}
+                    <label class="control-label">
+                        {{ label|raw|title }} {% if required==true %}<span class="symbol required"></span>{% endif %}
+                    </label>
+                {% endif %}
+                <input type="text" name="{{ name }}" value="{{ value }}" class="form-control ">
+            </div>
+        </div>
+    {% endif %}
+    {% if typeMacro == 'form_file' %}
+        <div class="{{ class }}">
+            <div class="form-group">
+                <label class="control-label">
+                    {{ label }} {% if required==true %}<span class="symbol required"></span>{% endif %}
+                </label>
+                <div class="fileupload fileupload-new" data-provides="fileupload">
+                    <div class="input-group">
+                        <div class="form-control uneditable-input">
+                            <i class="fa fa-file fileupload-exists"></i>
+                            <span class="fileupload-preview"></span>
+                        </div>
+                        <div class="input-group-btn">
+                            <div class="btn btn-light-grey btn-file">
+                                <span class="fileupload-new"><i class="fa fa-folder-open-o"></i> Select file</span>
+                                <span class="fileupload-exists"><i class="fa fa-folder-open-o"></i> Change</span>
+                                {{ form_widget(from) | raw }}
+                                {{ form_errors(from) | raw }}
+                            </div>
+                            <a href="#" class="btn btn-light-grey fileupload-exists" data-dismiss="fileupload">
+                                <i class="fa fa-times"></i> Remove
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if typeMacro == 'form_read_only' %}
+        <div class="{{ class }}">
+            <div class="form-group">
+                <label class="control-label">
+                    {{ label }} {% if required==true %}<span class="symbol required"></span>{% endif %}
+                </label>
+                {{ form_widget(from, { 'attr':{'readonly':'readonly'} }) | raw }}
+                {{ form_errors(from) | raw }}
+            </div>
+        </div>
+    {% endif %}
+    {% if typeMacro == 'form_input' %}
+        <div class="{{ class }}">
+            <div class="form-group">
+                {% if label is not null %}
+                    <label class="control-label">
+                        {{ label|raw }} {#{% if isTranslatableField(from.parent.vars.value,from.vars.name) %} ({{ app.request.locale|upper }}) {% endif %}#} {% if from.vars.required %}<span class="symbol required"></span>{% endif %}
+                    </label>
+                {% else %}
+                    {{ form_label(from) }}
+                {% endif %}
+
+                {% set attr={} %}
+                {% set id = from.vars.id %}
+                {% if changeId %}
+                    {% set attr={'id' : id ~ "_"} %}
+                {% endif %}
+
+                {% if value is null %}
+                    {{ form_widget(from,attr) | raw }}
+                {% else %}
+                    {% set attr=attr|merge({'value':value}) %}
+                    {{ form_widget(from,attr) | raw }}
+                {% endif %}
+
+                {{ form_errors(from) | raw }}
+                {% if smallText is not null %}
+                    <small>{{ smallText| raw }}</small>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    {% if typeMacro == 'form_select2' %}
+        {% set attr={'class': 'select-size-xs'} %}
+        {% if selectAll %}
+            <div class="{{ class }}">
+                <div class="form-group">
+                    <label class="control-label">{{ label|raw|title }} {% if from.vars.required %}<span
+                            class="symbol required"></span>{% endif %}<span
+                                style="position: absolute;right:-7px;">(x)Tous</span></label>
+                    <div class="input-group">
+                        {{ form_widget(from, {'attr': attr}) }}
+                        {{ form_errors(from) | raw }}
+                        {% if smallText is not null %}
+                            <small>{{ smallText| raw }}</small>
+                        {% endif %}
+                        <span class="input-group-addon">
+                                                                <input type="checkbox"
+                                                                       class="styled all_select_deselect"
+                                                                       name="input-addon-checkbox"
+                                                                       data-select="{{ from.vars.id }}">
+                                                            </span>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="{{ class }}">
+                <div class="form-group">
+                    {% if label is not null %}
+                        <label class="control-label">
+                            {{ label|raw|title }} {% if from.vars.required %}<span
+                                    class="symbol required"></span>{% endif %}
+                        </label>
+                    {% endif %}
+                    {{ form_widget(from, {'attr': attr}) }}
+                    {{ form_errors(from) | raw }}
+                    {% if smallText is not null %}
+                        <small>{{ smallText| raw }}</small>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if typeMacro == 'form_submit' %}
+        <hr>
+        <div class="row">
+            <div class="col-md-8">
+                <p>
+                    <span class="symbol required"></span>{{ "Champs obligatoires"|trans }}
+                </p>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary btn-block" type="submit">
+                    {% if load_ajax %}
+                        <i class="icon-spinner2 spinner hidden" id="load-submit"></i>
+                    {% endif %}
+                    {# {{ label }} <i class="fa fa-arrow-circle-right"></i> #}
+                     {{ label }} <i class="fa fa-print position-left"></i>
+                </button>
+            </div>
+        </div>
+    {% endif %}
+    {% if typeMacro == 'form_submit2' %}
+        <div class="{{ class }}">
+            <input class="btn btn-green btn-block" name="{{ name }}" value="{{ value }}" type="submit"/>
+        </div>
+    {% endif %}
+    {% if typeMacro == 'form_formPhoto' %}
+
+        {% import _self as formulaire %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {#<form action="{{ path(app.request.attributes.get('_route'),app.request.attributes.get('_route_params')) }}" {{ form_enctype(form) }}#}
+                        {{ form_start(form) }}
+                            {{ form_widget(form._token) }}
+                            <div class="row">
+                                {{ form_file("col-md-4","Photo",form.file,true) }}
+                                {{ form_input("col-md-3","Type",form.type,true) }}
+                                {{ form_input("col-md-3","Ordre",form.ordre,true) }}
+                            </div>
+                            {{ form_submit("Ajouter") }}
+                        {{ form_end(form) }}
+                        {#</form>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for image in images %}
+                {{ macro_albumPhoto(image) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if typeMacro == 'form_htmlInput' %}
+        <div class="{{ class }}">
+            <div class="form-group">
+                {% if label is not null %}
+                    <label class="control-label">
+                        {{ label|raw|title }} {% if required %}<span class="symbol required"></span>{% endif %}
+                    </label>
+                {% endif %}
+                <input type="text" name="{{ name }}" class="form-control" {% if required %}required{% endif %}
+                       placeholder="{{ placeholder }}">
+            </div>
+        </div>
+    {% endif %}
+    {% if typeMacro == 'form_htmlDate' %}
+        <div class="{{ class }}">
+            <div class="form-group">
+                {% if label is not null %}
+                    <label class="control-label">
+                        {{ label|raw|title }} {% if required %}<span class="symbol required"></span>{% endif %}
+                    </label>
+                {% endif %}
+                <input type="date" name="{{ name }}" class="form-control" {% if required %}required{% endif %}
+                       placeholder="{{ placeholder }}">
+            </div>
+        </div>
+    {% endif %}
+    {% if typeMacro == 'form_checkbox' %}
+        <div class="{{ class }}">
+            <div class="form-group">
+
+                {#<div class="checkbox">
+                    <label>
+                        <input type="checkbox" class="styled" checked="checked">
+                        Checked styled
+                    </label>
+                </div>#}
+
+
+
+
+
+                <div class="checkbox">
+                    <label>
+                        {{ form_widget(from, {'label':label,'attr': {'class': 'styled'}}) }}
+                        {{ form_errors(from) | raw }}
+                        {#{% if label is not null %}
+                            <label>
+                                {{ label|raw|title }} {% if required==true %}<span
+                                        class="text-danger">*</span>{% endif %}
+                            </label>
+                        {% endif %}#}
+                    </label>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if typeMacro == 'form_uploadImage' %}
+
+        {% set entity=form.vars.value %}
+
+        {% if type_image is null %}
+            {% if not plusieur %}
+                {% set type_image='profil' %}
+            {% else %}
+                {% set type_image='galerie' %}
+            {% endif %}
+        {% endif %}
+
+        <div class="{{ class }}">
+            <div class="form-group">
+                {% if label is not null %}
+                    <label class="control-label">
+                        {{ label|raw|title }} {% if required==true %}<span class="symbol required"></span>{% endif %}
+                    </label>
+                {% endif %}
+
+                {% if not plusieur %}
+                    {% set image = entity.images[type_image] is defined ? entity.images[type_image] : null %}
+                    <section>
+                        <div class="image form-group text-center">
+                            <div class="thumbnail thumbnail-">
+                                <img src="{{ asset(image?image.src:'plus.png') }}"
+                                     class="{{ image?'':'file-Select opacity' }} image-uploaded img-rounded">
+                                <div class="caption caption_">
+                                    <button type="button"
+                                            class="btn btn-xs btn-default btn-danger del-image {% if not image %}hidden{% endif %}"
+                                            src-img-plus="{{ asset('plus.png') }}"><i
+                                                class="fa fa-remove"></i>
+                                    </button>
+                                    {% if image %}
+                                        <input type="hidden" id="deleteimg" name="images-delete[{{ type_image }}]"
+                                               value="">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <input class="file-Elem hidden" type="file" class="hidden"
+                                   name="images[{{ type_image }}]"/>
+                        </div>
+                    </section>
+                {% else %}
+                    <section>
+                        <div class="images {{ type_image }}" data-type="{{ type_image }}">
+                            {% if entity.images[type_image] is defined %}
+                                {% for image in entity.images[type_image] %}
+                                    <div id="{{ type_image ~ loop.index }}">
+                                        <div class="thumbnail thumbnail_">
+                                            <img src="{{ asset(image.src) }}" class="image-uploaded img-rounded">
+                                            <div class="caption caption_">
+                                                <button data-id="{{ type_image ~ loop.index }}" type="button"
+                                                        class="btn btn-xs btn-default btn-danger del-image"><i
+                                                            class="fa fa-remove"></i>
+                                                </button>
+                                                {% if ordre %}
+                                                    <input type="number" class="form-control ordre"
+                                                           name="ordre[{{ type_image }}][]"
+                                                           value="{{ image.ordre is defined ? image.ordre : loop.index }}">
+                                                {% endif %}
+                                                <input type="hidden" id="deleteimg"
+                                                       name="images-delete[{{ type_image }}][]" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <div id="image_preview">
+                                <div class="thumbnail thumbnail_">
+                                    <img src="{{ asset('plus.png') }}"
+                                         class="file-Select image-uploaded img-rounded opacity">
+                                    <div class="caption caption_">
+                                        <button data-id="0" type="button"
+                                                class="btn btn-xs btn-default btn-danger del-image hidden"><i
+                                                    class="fa fa-remove"></i>
+                                        </button>
+                                        {% if ordre %}
+                                            <input type="number" class="form-control hidden ordre" name="" value="0">
+                                        {% endif %}
+                                    </div>
+                                    <input type="file" class="file-Elem hidden" name="">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                {% endif %}
+
+                {% if smallText is not null %}
+                    <small>{{ smallText }}</small>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if typeMacro == 'tpl_wizard' %}
+        <div class="membership-page-top">
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                    <ol class="pay-step-bar">
+                        <li class="pay-step-block  {{ etatEtape1 }}"><span>{{ etape1 }}</span></li>
+                        <li class="pay-step-block {{ etatEtape2 }}"><span>{{ etape2 }}</span></li>
+                        <li class="pay-step-block {{ etatEtape3 }}"><span>{{ etape3 }}</span></li>
+                        {% if etape4 %}
+                            <li class="pay-step-block {{ etatEtape4 }}"><span>{{ etape4 }}</span></li>
+                        {% endif %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if typeMacro == 'tpl_subcontent' %}
+        <div id="sub_content_in_left">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h1>{{ titre }}</h1>
+                        {% if sousTitre %}
+                            <span><i class="icon_pin"></i>{{ sousTitre }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        {% if textScore1 %}
+                            <div class="score_wp_in">{{ textScore1 }}
+                                <div id="score_1" class="score_in" data-value="{{ valueScore1 }}"></div>
+                            </div>
+                        {% endif %}
+                        {% if textScore2 %}
+                            <div class="time_wp_in">{{ textScore2 }}
+                                <div id="time_1" class="time_in" data-value="{{ valueScore2 }}"></div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if typeMacro == 'tpl_subHeader' %}
+        {% import _self as tpl %}
+        <section class="detail-top detail-top-full">
+            <div class="detail-media">
+
+                <div class="tab-content">
+                    <div id="gallery" class="tab-pane fade in active"
+                         style="background-image: url({{ asset(image|default('front-assets/images/sht_banner.jpg')) }})">
+                    </div>
+
+                    <div class="bg-front full-center caption"
+                         style="position:absolute;margin: auto;top: 0;right: 0;bottom: 0;left: 0;background-color: transparent !important;height: 0;text-align: center;">
+                        <div class="owl-cap">
+                            <h1 class="owl-cap-title fittext titreBanner"
+                                style="background: url({{ asset('front-assets/assets/images/icons/wave-border-b.png') }}) no-repeat;background-position: center;color: #fff;font-size: 38px;padding-top: 15px;padding-bottom: 80px;text-transform: initial; text-shadow: 1px 1px 2px #000000d9;">{{ titre }}</h1>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </section>
+    {% endif %}
+
+{% endspaceless %}

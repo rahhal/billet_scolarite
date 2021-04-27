@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <title>{{ "Billet d'entrée"|trans }}</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/print.css') }}">
+    <link href="{{ asset('assets/css/icons/fontawesome/styles.min.css') }}" rel="stylesheet" type="text/css">
+</head>
+<style>
+   @page {
+        size: 8cm 8cm;
+    }
+    @media print {
+        html, body {
+            width: 8cm;
+            min-height: 8cm;
+            padding: 0px;
+        }
+    }
+    td{
+        text-align: right;
+        border: none;
+    }
+    .text-center{
+        text-align: center !important;
+    }
+    .p-r-15{
+        padding-right: 15px !important;
+    }
+</style>
+<body onload="window.print()" style="width: 8cm;min-height: 8cm;padding: 0px">
+{# {% if  not app.session.get('check-license') %}
+    <p>Envoyer le code secret  <b style='color:blue'>{{ app.session.get('code-secret') }}</b> au service technique de DIP pour génére votre propre clé de license</p>
+{% else %} #}
+    {% set info = InfoGeneral() %}
+    <table width="100%" style="padding-top: 15px">
+        <tbody>
+        <tr>
+            <td class="p-r-15">{{ info.etablissement ~ ' بـ' ~ info.ville }}</td>
+            <td style="padding-right: 38px">
+                <span>التاريخ : {{ date()|date('d-m-Y') }}</span><br><br>
+                <span>التوقيت : {{ date()|date('H:i') }}</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    {% set punition = punitions|first %}
+    <h1 style="letter-spacing: 0;">بطاقة الدخول</h1>
+    <table>
+        <tbody>
+        <tr>
+            <td class="p-r-15" style="width: 75px"><b>القسم : </b></td>
+            <td>{{ punition.classe }}</td>
+        </tr>
+        <tr>
+            <td class="p-r-15" style="vertical-align: top;"><b>الإسم و اللقب : </b></td>
+            <td>{{ punitions|join(', ')}}</td>
+        </tr>
+        <tr>
+            <td class="p-r-15"><b>تاريخ الغياب : </b></td>
+            <td>{{ punition.dateDebut|date('d/m/Y') }}</td>
+        </tr>
+        <tr><td colspan="2"></td></tr>
+        <tr><td colspan="2"></td></tr>
+        <tr>
+            <td class="p-r-15"><b>السبب : </b></td>
+            <td>{{ punition.type|trans }}</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="text-center"><b>مكتب شؤون التلاميذ</b> {{ app.user.nomPrenom }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="print-btn no-print">
+        <div style="text-align: center;display: block;">
+            <a title="Imprimer" href="javascript:void(0)" onclick="window.print();"><span class="fa fa-print fa-3x"></span></a>
+        </div>
+    </div>
+{# {% endif %} #}
+</body>
+</html> 

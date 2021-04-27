@@ -1,0 +1,127 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    images_directory: '%kernel.project_dir%/public/uploads'
+    locale: ar
+    app.color:
+        absence: '#9E9E9E'
+        exclusion: '#2196F3'
+        retard: '#8BC34A'
+        avertissement: '#e8d319'
+        expulsion: '#FF9800'
+        conseil: '#9C27B0'
+        elimine: 'red'
+        billet: '#23c706'
+    app.locales:
+        - { code: fr, name: Français, tag: fr }
+        - { code: ar, name: Arabe, tag: sa }
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    App\Twig\Extension\GeneraleExtension:
+        tags:
+            - { name: twig.extension }
+        arguments:
+            $em: '@doctrine.orm.entity_manager'
+
+    App\Twig\Extension\ThemesTemplateExtention:
+        tags:
+            - { name: twig.extension }
+        arguments:
+            $twig: '@twig'
+    
+    App\Listener\GeneraleListener:
+        arguments:
+            $session: '@session'
+            $em: '@doctrine.orm.entity_manager'
+            $container: '@service_container'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest } 
+
+    App\Service\GeneraleService:
+        arguments:
+            $em: '@doctrine.orm.entity_manager'
+            $container: '@service_container'
+
+    App\Service\PunitionsAbsenceService:
+        arguments:
+            $em: '@doctrine.orm.entity_manager'
+            $container: '@service_container'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous onesones
+
+    Gedmo\Blameable\BlameableListener:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    Gedmo\Tree\TreeListener:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    Gedmo\Translatable\TranslatableListener:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ '@annotation_reader' ] ]
+            - [ setDefaultLocale, [ fr ] ]
+            - [ setTranslationFallback, [ true ] ]
+
+    Gedmo\Timestampable\TimestampableListener:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    Gedmo\Sluggable\SluggableListener:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    Gedmo\Sortable\SortableListener:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    Gedmo\Loggable\LoggableListener:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    Gedmo\SoftDeleteable\SoftDeleteableListener:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ '@annotation_reader' ] ]
+
+    

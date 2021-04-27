@@ -1,0 +1,53 @@
+{% extends "impression/print.html.twig" %}
+{% set info = InfoGeneral() %}
+
+{% block title %}
+    <title>التقرير اليومي</title>
+{% endblock %}
+
+{% block header %}
+    {% include "impression/header.html.twig" %}
+{% endblock %}
+
+{% block stylesheet %}
+    <style>
+        .header td{
+            border:0px;
+        }
+        th,td{
+            border:1px solid black;
+        }
+        .content table {
+            border-collapse: collapse;
+        }
+        .content th{
+            text-align: center;
+        }
+        td{
+            padding-right: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1>تلاميذة لم تسوى وضعياتهم</h1>
+    <br>
+    <table>
+        <thead>
+        <tr>
+            <th>القسم</th>
+            <th>الإسم و اللقب</th>
+            <th>تاريخ الغياب</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for punition in punitions %}
+            <tr>
+                <td>{{ punition.eleve.classe }}</td>
+                <td>{{ punition.eleve.nomPrenom }}</td>
+                <td class="text-center">{{ punition.dateDebut|date('d/m/Y') }} {{ punition.heure ? punition.heure|date('H:i') : '' }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

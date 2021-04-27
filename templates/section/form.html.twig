@@ -1,0 +1,25 @@
+{% set mode = form.vars.value is not null ? "edit" : "add" %}
+{{ form_start(form,{attr : { action : action } } ) }}
+{% if mode == "edit" %}
+    <input type="hidden" id="id" value="{{ form.vars.value.id }}">
+    <input type="hidden" id="index">
+{% endif %}
+<div class="row">
+    {{ form_input("col-md-1","Code"|trans,form.code) }}
+    {{ form_input("col-md-1","Libellé AR"|trans,form.libelle_ar) }}
+    {{ form_input("col-md-1","Libellé FR"|trans,form.libelle_fr) }}
+</div>
+<hr>
+
+<div class="text-right">
+    <button type="submit" class="btn btn-primary"><i
+                class="fa fa-{{ (mode == "edit" ? "edit" : "save") }}  position-left"></i> {{ (mode == "edit" ? "Modifier" : "Enregistrer")|trans }}
+    </button>
+</div>
+{{ form_end(form) }}
+{% if mode == "edit" %}
+    <script>
+
+
+    </script>
+{% endif %}

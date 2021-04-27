@@ -1,0 +1,46 @@
+{% extends "impression/print.html.twig" %}
+{% set info = InfoGeneral() %}
+
+{% block title %}
+    <title>استدعاء ولي</title>
+{% endblock %}
+
+{% block header %}
+    {% include "impression/header.html.twig" %}
+{% endblock %}
+
+{% block content %}
+
+   <h1>استدعاء التلميذ</h1>
+   <br><br> <br>
+    <table>
+        <tbody>
+      
+        <tr>
+            <th>    التلميذ(ة) : {{ eleve.nomPrenom }}</th>
+            <th >المرسم(ة) بـ{{ eleve.classeAnneeActuelle }}</th>
+        </tr>
+        <tr>
+            <td> <br><br> <br> </td>
+        </tr>
+        <tr>
+            <th colspan="2"> مدعو للحضور بمكتب السيد المرشد التربوي.</th>
+            <th></th>
+        </tr>
+       <tr>
+            <th>   يوم:...................</th>
+            <th >على الساعة:.......................</th>
+        </tr>
+        <tr>
+            <th colspan="2"> لذا فإنه لا يقبل بالفصل إلا ببطاقة دخول.</th>
+            <th></th>
+        </tr>
+        </tbody>
+    </table>
+   
+    <br><br><br><br>
+        <p style="text-align: left; font-size: 16px;"><b>في : {{ date()|date('d-m-Y') }}</b></p>
+
+    <p style="text-align: left; font-size: 16px;"><b>إمضاء القيم العام</b></p>
+    
+{% endblock %}

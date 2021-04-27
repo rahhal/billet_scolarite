@@ -1,0 +1,17 @@
+<script>
+    {% set matieres = form.vars.form.children.matiere.vars.choices %}
+    $(document).on('change', 'div#form-{{ type|lower }} .matiere', function () {
+        let enseignant = $('div#form-{{ type|lower }} .enseignant');
+        enseignant.empty();
+        let matiere = $(this).val();
+        {% for matiere in matieres %}
+        if (matiere == {{ matiere.data.id }}) {
+            {% for enseignant in matiere.data.enseignants %}
+            enseignant.append('<option value="{{ enseignant.id }}">{{ enseignant }}</option>');
+            {% endfor %}
+            enseignant.select2();
+        }
+        {% endfor %}
+    });
+    $('div#form-{{ type|lower }} .matiere').select2().change();
+</script>

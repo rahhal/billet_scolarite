@@ -1,0 +1,153 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ "Punitions & Absences non traitées"|trans }}{% endblock %}
+
+{% block body %}
+    <div id="message-alert"></div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">{{ "Liste des punitions et absences non traitées"|trans }}<a
+                        class="heading-elements-toggle"><i class="icon-more"></i></a></h5>
+        </div>
+
+
+        <div class="panel-body table-responsive">
+            <table class="table text-nowrap">
+                <tbody>
+                {% for resp in response %}
+                    <tr id="tr-{{ resp.id }}">
+                        <td>
+                            <div class="media-body">
+                                <a href="#"
+                                   class="display-inline-block text-default text-semibold letter-icon-title">{{ resp.eleve }}</a>
+                                <div class="text-muted text-size-small"><span
+                                            class="status-mark border-blue position-left"></span> {{ resp.eleve.classe }}
+                                </div>
+                            </div>
+                        </td>
+
+                        {% if resp.absence is defined %}
+                            <td class="text-center">
+                                <h6 class="no-margin">{{ resp.absence }}
+                                    <small class="display-block text-size-small no-margin">{{ "absence"|trans }}</small>
+                                </h6>
+                            </td>
+                            <td>
+                                <a href="#modal-reglement" data-toggle="modal" onclick="$('input#id-punition-absence').val({{ resp.id }});" class="btn btn-default">{{ "Reglement absence"|trans }}</a>
+                                {% if resp.absence >=21 %}
+                                    <a href="{{ path('impression_punition',{id:resp.id,etat:'notification-finition'}) }}" target="_blank" class="btn btn-default">{{ "Avis de radiation"|trans }}</a>
+                                {% elseif resp.absence >=15 %}
+                                    <a href="{{ path('impression_punition',{id:resp.id,etat:'notification-absence3'}) }}" target="_blank" class="btn btn-default">{{ "3 éme annonce d'absence"|trans }}</a>
+                                {% elseif resp.absence >=7 %}
+                                    <a href="{{ path('impression_punition',{id:resp.id,etat:'notification-absence2'}) }}" target="_blank" class="btn btn-default">{{ "2 éme annonce d'absence"|trans }}</a>
+                                {% elseif resp.absence >=3 %}
+                                    <a href="{{ path('impression_punition',{id:resp.id,etat:'notification-absence1'}) }}" target="_blank" class="btn btn-default">{{ "Premiére annonce d'absence"|trans }}</a>
+                                {% endif %}
+                            </td>
+                        {% else %}
+                            <td class="text-center">
+                                <h6 class="no-margin">{{ resp.avertissement.nbr }}
+                                    <small class="display-block text-size-small no-margin">{{ "avertissement"|trans }}</small>
+                                </h6>
+                            </td>
+                            <td>
+                                {% set nbrJourExpul = 1 %}
+                                {% if resp.avertissement.nbr >= 5 %}
+                                    {% set nbrJourExpul = 3 %}
+                                {% endif %}
+                                <a href="javascript:void(0);" class="text-default display-inline-block add-expultion btn btn-default" data-eleve="{{ resp.eleve.id }}" data-jours="{{ nbrJourExpul }}" data-ids="{{ resp.avertissement.ids|join(',') }}">
+                                    <i class="icon-spinner3 spinner hidden"></i> {{ ("Expultion de " ~ nbrJourExpul ~ " jour" ~ (nbrJourExpul == 3 ? 's' : ''))|trans }}
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset("assets/js/plugins/notifications/sweet_alert.min.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("assets/js/plugins/notifications/bootbox.min.js") }}"></script>
+{% endblock %}
+
+
+{% block jquery %}
+    <script>
+        $('.add-expultion').click(function () {
+            let spinner = $(this).find('.spinner');
+            let $this=$(this);
+            bootbox.dialog({
+                size: 'small',
+                title: "{{ "Punitions & Absences"|trans }}",
+                message: '<label>{{ "Date Début"|trans }}:</label><br><input class="form-control" type="date" value="{{ date()|date('Y-m-d') }}" name="jour">',
+                buttons: {
+                    success: {
+                        label: "{{ "Valider"|trans }}",
+                        className: "btn-success",
+                        callback: function () {
+                            spinner.removeClass('hidden');
+                            $.ajax({
+                                url: '{{ path('add_expultion') }}',
+                                data: {
+                                    jours:$this.data('jours'),
+                                    avertiss:$this.data('ids'),
+                                    eleve:$this.data('eleve'),
+                                    debut:$(this).find('input[name="jour"]').val()
+                                },
+                                complete: function () {
+                                    spinner.addClass('hidden');
+                                },
+                                success: function (notif) {
+                                    $this.closest('tr').remove();
+                                    if (notif>0)
+                                        $('li#notification-punitions-absences').show();
+                                    else
+                                        $('li#notification-punitions-absences').hide();
+                                },
+                                error: function (jqXHR) {
+                                    my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                                }
+                            });
+                        }
+                    }, danger: {
+                        label: "{{ "Fermer"|trans }}",
+                        className: "btn-danger"
+                    }
+                }
+            });
+
+        });
+
+        $('#form-reglement').submit(function (e) {
+            e.preventDefault();
+            $('#modal-reglement .modal-body').LoadingOverlay("show", {
+                image: "",
+                fontawesome: "icon-spinner3 spinner"
+            });
+
+            $.ajax({
+                url: $(this).attr('action'),
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                type: "POST",
+                complete: function () {
+                    $('#modal-reglement .modal-body').LoadingOverlay("hide", true);
+                    $('#modal-reglement').modal('hide');
+
+                },
+                success: function (data) {
+                    $('#tr-'+$('input#id-punition-absence').val()).remove();
+                },
+                error: function (jqXHR) {
+                    my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                }
+            });
+        })
+    </script>
+{% endblock %}

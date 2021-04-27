@@ -1,0 +1,27 @@
+{% set mode = form.vars.value is not null ? "edit" : "add" %}
+{{ form_start(form,{attr : { action : action } } ) }}
+{% if mode == "edit" %}
+    <input type="hidden" id="id" value="{{ form.vars.value.id }}">
+    <input type="hidden" name="index">
+{% endif %}
+<div class="row">
+    {{ form_input("col-md-2","Année"|trans,form.annee) }}
+    {{ form_checkbox("col-md-2 m-t-25","Courant"|trans,form.current) }}
+    {{ form_input("col-md-4","Directeur"|trans,form.directeur) }}
+    {{ form_input("col-md-4","Surveillant"|trans,form.surveillant) }}
+</div>
+<hr>
+
+<div class="text-right">
+    <button type="submit" class="btn btn-primary"><i
+                class="fa fa-{{ (mode == "edit" ? "edit" : "save") }}  position-left"></i> {{ (mode == "edit" ? "Modifier" : "Enregistrer")|trans }}
+    </button>
+</div>
+{{ form_end(form) }}
+{% if mode == "edit" %}
+    <script>
+        $("#modal-edit-anneescolaire .styled").uniform();
+
+
+    </script>
+{% endif %}

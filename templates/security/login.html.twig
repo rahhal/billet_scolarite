@@ -1,0 +1,143 @@
+{# 
+{% extends 'base_user.html.twig' %}
+
+{% block title %}تسجيل الدخول{% endblock %}
+{% block body_class %} class="login" {% endblock %}
+{% block body %}
+<div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+    <a class="hiddenanchor" id="reset"></a>
+
+    <div class="login_wrapper"  >
+        <div class="container" style="color: #0000cc;  border: #0000cc 1px solid;">
+        <div class="animate form login_form" >
+            {# {% include('layouts/flash-messages.html.twig') %} #}
+        {#    <section class="login_content">
+                <form method="post">
+                    <h1 style="background-color:#10649e; color: white; align: center;"> {{ "تسجيل الدخول الى المنظومة"|trans }}</h1>
+                    <div>
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+
+                        {% if app.user %}
+                            <div class="mb-3">
+                                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">الخروج</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="البريد الإلكتروني" required autofocus />
+                    </div>
+                    <div>
+                        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="كلمه السر" required="" />
+
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <div>
+                     <a class="reset_pass" href="#">نسيت كلمة المرور</a>
+                        <button type="submit" class="btn bg-danger-800 btn-block">تسجيل الدخول</button>
+                        {# <a class="reset_pass" href="{{ path('app_forgotten_password') }}">نسيت كلمة المرور</a> #}
+                   
+                    {# </div>
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+                        <div class="clearfix"></div> #}
+                        {# <br /> #}
+                        {#<span>  <a  href="#reset">ليس لديك حساب</a></span>#}
+                       {# <br />
+                        <br />#}
+                       
+                   {# </div>
+                </form>
+            </section>
+        </div>
+    </div>
+    </div>
+</div>
+
+{% endblock %}
+================================= #}
+ {% extends 'base_user.html.twig' %}
+
+{% block title %}{{ "تسجيل الدخول الى المنظومة"|trans }}{% endblock %}
+{% block body_class %} class="login" {% endblock %}
+{% block body %}
+<div class="login-container login-cover">
+
+    <!-- Page container -->
+    <div class="page-container">
+
+        <!-- Page content -->
+        <div class="page-content">
+
+            <!-- Main content -->
+ <div class="content-wrapper">
+                <!-- Content area -->
+                <div class="content pb-20" >
+                    <!-- Form inside modals -->
+
+                    <div class="panel panel-body login-form" style="background-color:#10649e;" >
+                        <div class="text-center">
+                            <img src="{{ asset('assets/images/log.png')}}" alt="">
+                        </div>
+                        <div class="content-group">
+                            <form method="post">
+                                <div class="content-divider text-muted form-group" >
+                                    <span style="background-color:#10649e; color: white"><h1>{{ "تسجيل الدخول الى المنظومة"|trans }}</h1></span>
+                                </div>
+                                <div>
+                                    {% if error %}
+                                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                    {% endif %}
+                                    {% if app.user %}
+                                        <div class="mb-3">
+                                            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">الخروج</a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group has-feedback has-feedback-left">
+                                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="اسم المستخدم">
+                                    <div class="form-control-feedback">
+                                        <i class="icon-user text-muted"></i>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback has-feedback-left">
+                                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="كلمة السر">
+                                    <div class="form-control-feedback">
+                                        <i class="icon-lock2 text-muted"></i>
+                                    </div>
+                                </div>
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                <div class="form-group login-options">
+                                    <div class="row">
+                                        <div class="col-sm-6 text-right"></div>
+                                        <div class="col-sm-6 text-right">
+                                            <a href="#" style=" color: white">نسيت كلمة المرور؟</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn bg-danger-800 btn-block"> <h4>تسجيل الدخول</h4>
+                                    </button>
+                                </div>
+                            </form>
+                            <!-- /form -->
+                        </div>
+
+                    </div>
+                    <!-- /content area -->
+
+                </div>
+                <!-- /main content -->
+
+            </div>
+            <!-- /page content -->
+
+        </div>
+        <!-- /page container -->
+    </div>
+    {% endblock %}

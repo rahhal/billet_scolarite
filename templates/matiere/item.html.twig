@@ -1,0 +1,14 @@
+{% if list is not defined %}<script>{% endif %}
+    $("#table-liste-matiere").bootstrapTable("{{ index is defined ? "updateRow" : "insertRow" }}", {
+        index: {{ index is defined ? index : 0 }},
+        row: {
+        code: '{{ matiere.code }}',
+        libelle: '{{ matiere.libelle }}',
+        action: "\n" +
+            '<a href="javascript:void(0);" data-id="{{ matiere.id }}" data-action="{{ path("matiere_delete", {"id": matiere.id}) }}"'+
+               'class="btn-delete-matiere"><i class="icon-trash"></i></a>'+
+            '<a href="#modal-edit-matiere" data-toggle="modal" data-action="{{ path("matiere_edit", {"id": matiere.id}) }}"'+
+               'class="btn-edit-matiere"><i class="icon-pencil"></i></a>'
+        }
+    })
+{% if list is not defined %}</script>{% endif %}

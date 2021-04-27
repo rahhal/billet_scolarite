@@ -1,0 +1,65 @@
+.content table{
+    font-size: 17px;
+    width: 100%;
+}
+.content table.border {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+.content table.border td{
+    padding-right: 25px !important;
+    padding-left: 25px !important;
+}
+.content th,td{
+    text-align: right;
+}
+.content .table-details th{
+    width: 105px;
+}
+.content #tbl-signature td{
+    text-align: center !important;
+}
+.content h1{
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+}
+.text-center{
+    text-align: center !important;
+}
+.text-right{
+    text-align: right !important;
+}
+.text-left{
+    text-align: left !important;
+}
+body{
+    padding: 20px;
+}
+.header td{
+    text-align: center;
+}
+/**********************************************************************************************************************/
+.header, .header-space,
+.footer, .footer-space {
+    height: 50px;
+}
+
+@media print {
+    .header, .header-space,
+    .footer, .footer-space {
+        height: 100px;
+    }
+
+    .header {
+        position: fixed;
+        top: 0;
+        padding-left: 20px;
+        padding-top: 20px;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+    }
+}

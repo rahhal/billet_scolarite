@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en" {% if app.request.locale == 'ar' %}dir="rtl"{% endif %}>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ "Scolarite"|trans }}{% endblock %}</title>
+    <!-- Global stylesheets -->
+
+    {% block stylesheets %}
+        <!-- Global stylesheets -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet"
+              type="text/css">
+        <link href="{{ asset('assets/css/icons/icomoon/styles.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('assets/css/icons/fontawesome/styles.min.css') }}" rel="stylesheet" type="text/css">
+
+        {% set folder = app.request.locale == 'ar' ? '/RTL' : '' %}
+        <link href="{{ asset('assets/css' ~ folder ~ '/bootstrap.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('assets/css' ~ folder ~ '/core.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('assets/css' ~ folder ~ '/components.css') }}" rel="stylesheet" type="text/css">
+
+        <link href="{{ asset('assets/css/colors.css') }}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{{ asset('assets/css/jquery-confirm.min.css') }}">
+        <link href="{{ asset('assets/css/custom_css.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet" type="text/css">
+<!-- My Style -->
+    <link href="{{ asset('assets/css/style1.css') }}" rel="stylesheet">
+
+        <script type="text/javascript" src="{{ asset('assets/js/core/libraries/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/plugins/forms/selects/select2.min.js') }}"></script>
+        <style>
+            body {
+                /*font-family: BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif*/
+                /* font: 13px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif */
+            }
+
+            .red {
+                color: red !important;
+            }
+
+            .isDisabled {
+                color: currentColor;
+                cursor: not-allowed;
+                opacity: 0.5;
+                text-decoration: none;
+            }
+
+            .symbol.required:before {
+                content: '*';
+                color: red;
+            }
+
+            a i.icon-trash {
+                color: red;
+            }
+
+            div.icon-spinner3 {
+                font-size: 100px;
+            }
+        </style>
+        <!-- /global stylesheets -->
+    {% endblock %}
+    <!-- /global stylesheets -->
+
+    <!-- /theme JS files -->
+
+</head>
+
+<body>
+<!-- Main navbar -->
+{% include "navbar.html.twig" %}
+<!-- /main navbar -->
+
+
+<!-- Page container -->
+<div class="page-container">
+{#{{ dump(app.session.flashbag) }}#}
+    <!-- Page content -->
+    <div class="page-content">
+
+        <!-- Main sidebar -->
+        {% include "menu.html.twig" %}
+        <!-- /main sidebar -->
+
+
+        <!-- Main content -->
+        <div class="content-wrapper">
+
+            <!-- Page header -->
+            {# <div class="page-header page-header-default"> #}
+              {#  <div class="page-header-content">
+                    <div class="page-title">
+                        <h4><i class="icon-arrow-left52 position-left"></i> <span
+                                    class="text-semibold">{{ "Home"|trans }}</span> -
+                            {{ "Dashboard"|trans }}</h4>
+                    </div>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="heading-elements">
+                            <div class="heading-btn-group">
+                                {#<a href="{{ path('notification_punitions_absences') }}"
+                                   class="btn btn-link btn-float has-text"><i
+                                            class="icon-info22 text-primary"></i><span>{{ "Notification"|trans }}</span></a>#}
+                       {#}     </div>
+                        </div>
+                    {% endif %}
+                </div>#}
+
+                {# <div class="breadcrumb-line">
+                    {# <ul class="breadcrumb">
+                        <li><a href="index.html"><i class="icon-home2 position-left"></i> {{ "Home"|trans }}</a></li>
+                        <li class="active">{{ "العقوبات والغيابات"|trans }}</li>
+                    </ul> #}
+                   {#} {% if is_granted('ROLE_ADMIN') %}
+                        <ul class="breadcrumb-elements">
+                            <li id="notification-punitions-absences"
+                            {% if not app.session.get('notification-punitions-absences') %}
+                                style="display: none"
+                            {% endif %}
+                            ><a class="red"
+                                                                        href="{{ path('notification_punitions_absences') }}"
+                                                                        target="_blank"><i
+                                            class="icon-alert position-left"></i> {{ "Punition et absence non réglée"|trans }}
+                                </a></li>
+                            <li><a href="#" id="export_database"><i
+                                            class="icon-database-export position-left"></i> {{ "Export base des données"|trans }}
+                                </a></li>
+                            <li><a href="javascript:void(0);" id="import_database" onclick="$('#file-sql').click();"><i
+                                            class="icon-database-upload position-left"></i> {{ "Importbase des données"|trans }}
+                                </a>
+                                <form action="{{ path('import_database') }}" method="post" enctype="multipart/form-data"
+                                      hidden id="import-database">
+                                    <input type="file" accept=".sql" id="file-sql" name="fileSQL">
+                                </form>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" id="update_database"><i
+                                            class="icon-database-refresh position-left"></i> {{ "Mettre à jour base des données"|trans }}
+                                </a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div> #}
+            {# </div> #}
+            <!-- /page header -->
+
+
+            <!-- Content area -->
+            <div class="content">
+                <div id="message-alert"></div>
+                {% block body %}{% endblock %}
+                <!-- Footer -->
+                {% include "footer.html.twig" %}
+                <!-- /footer -->
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /main content -->
+
+    </div>
+    <!-- /page content -->
+    <div id="modal-reglement" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Règlement Aََbsence"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form id="form-reglement" action="{{ path('reglement_punitions_absences') }}">
+                        <div class="row">
+                            <input type="hidden" id="id-punition-absence" name="id">
+                            <div class="col-md-6">
+                                <div class="form-group"><label class="control-label">
+                                        {{ "Mode Règlement"|trans }} </label>
+                                    <select name="mode" class="form-control">
+                                        <option value="Aucun">{{ "Aucun"|trans }}</option>
+                                        <option value="Présence du parents">{{ "Présence du parents"|trans }}</option>
+                                        <option value="Certificat médicale">{{ "Certificat médicale"|trans }}</option>
+                                        <option value="Attestation de présence">{{ "Attestation de présence"|trans }}</option>
+                                        <option value="Autres documents">{{ "Autres documents"|trans }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group"><label class="control-label">
+                                        {{ "Date Règlement"|trans }} </label>
+                                    <input type="date" name="date" id="date-regle"
+{#                                            {% if not is_granted('ROLE_ADMIN') %} readonly {% endif %}#}
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <input type="hidden" name="impression" id="impression">
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary" onclick="$('input#impression').val(0);"><i
+                                        class="fa fa-save  position-left"></i>
+                                {{ "طباعة"|trans }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-filtre-eleve" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_punition') }}" id="form-impr-atts-pres" target="_blank">
+                        <input type="hidden" name="etat" value="attestation-presence">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                            <div class="col-md-6">
+                                <div class="form-group"><label class="control-label">{{ "Raison"|trans }}</label>
+                                    <input type="text" class="form-control" name="raison">
+                                </div>
+                            </div>
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                        {# <div class="text-right">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-print"></i>
+                                {{ "Impression"|trans }}
+                            </button>
+                        </div> #}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-filtre-eleve1" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_punition') }}" id="" target="_blank">
+                        <input type="hidden" name="etat" value="carte-eleve">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve1',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-filtre-eleve2" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_punition') }}" id="" target="_blank">
+                        <input type="hidden" name="etat" value="engagement">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve2',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-filtre-eleve3" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_punition') }}" id="" target="_blank">
+                        <input type="hidden" name="etat" value="questionnaire">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve3',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-filtre-eleve4" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_punition') }}" id="" target="_blank">
+                        <input type="hidden" name="etat" value="convocation-parent">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve4',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-filtre-eleve5" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_punition') }}" id="" target="_blank">
+                        <input type="hidden" name="etat" value="convocation-eleve">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve5',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-filtre-eleve6" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_punition') }}" id="" target="_blank">
+                        <input type="hidden" name="etat" value="seance-supplimentaire">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve6',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-filtre-eleve7" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_document') }}" id="" target="_blank">
+                        <input type="hidden" name="etat" value="notification-absence1">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve7',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-filtre-eleve8" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_punition') }}" id="" target="_blank">
+                        <input type="hidden" name="etat" value="notification-absence2">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve8',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+     <div id="modal-filtre-eleve9" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_punition') }}" id="" target="_blank">
+                        <input type="hidden" name="etat" value="notification-absence3">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve9',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+     <div id="modal-filtre-eleve10" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_punition') }}" id="" target="_blank">
+                        <input type="hidden" name="etat" value="notification-absence1">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve10',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-filtre-eleve11" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Impression"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    <form action="{{ path('impression_punition') }}" id="" target="_blank">
+                        <input type="hidden" name="etat" value="carte-renseignement">
+                        <div class="row">
+                            {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'modal-filtre-eleve11',eleve:1,mdSection:6,mdNiveau:6,mdClasse:6,mdEleve:6})) }}
+                        </div>
+                        {{ form_submit("Impression"|trans) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page container-->
+<!-- Core JS files -->
+{% block javascripts %}
+    <!-- Core JS files -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/loaders/pace.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/core/libraries/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/loaders/blockui.min.js') }}"></script>
+    <!-- /core JS files -->
+    <!-- Theme JS files -->
+    <script type="text/javascript" src="{{ asset("assets/js/pages/datatables_extension_buttons_html5.js") }}"></script>
+
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/forms/styling/uniform.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/forms/styling/switchery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/forms/styling/switch.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/core/libraries/jquery_ui/interactions.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/notifications/bootbox.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/notifications/sweet_alert.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/media/fancybox.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/core/app.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/pages/datatables_sorting.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/pages/form_select2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/pages/gallery.js') }}"></script>
+    <script type="text/javascript" src="{{ asset("assets/js/jquery.number.js") }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/loadingoverlay.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/toastr.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset("assets/js/bootstrap-table.min.js") }}"></script>
+    <script type="text/javascript"
+            src="{{ asset("assets/js/bootstrap-table-" ~ (app.request.locale == 'ar' ? 'ar-SA' : 'fr-FR') ~ ".min.js") }}"></script>
+
+    <script src="{{ asset('assets/js/jquery-confirm.min.js') }}"></script>
+    {#    <script type="text/javascript" src="{{asset('assets/js/pages/form_checkboxes_radios.js')}}"></script>#}
+
+    <!-- /theme JS files -->
+    <script>
+        //============================== Traduction ===============================================
+        let language = {
+            "zeroItem": '{{ "Aucun enregistrement trouvé"|trans }}',
+            "parcourir": '{{ "Parcourir"|trans }}',
+            "confirmSupp": {
+                "title": '{{ "Confirmation suppression"|trans }}',
+                "msg": '{{ "Êtes-vous sûr de vouloir supprimer cette ligne?"|trans }}',
+                "btn": '{{ "Supprimer"|trans }}'
+            }
+        };
+        //============================== Date Debut Fin ===============================================
+        $('input[type="date"]').each(function () {
+
+            if (($(this).attr('id') !== undefined && $(this).attr('id').toLowerCase().indexOf('debut') != -1) ||
+                ($(this).attr('name') !== undefined && $(this).attr('name').toLowerCase().indexOf('debut') != -1) ||
+                ($(this).attr('class') !== undefined && $(this).attr('class').toLowerCase().indexOf('debut') != -1)) {
+                $(this).addClass('startDate').addClass('startDate' + $('.startDate').length).attr('data-enddate', 'endDate' + $('.startDate').length);
+            }
+            if (($(this).attr('id') !== undefined && $(this).attr('id').toLowerCase().indexOf('fin') != -1) ||
+                ($(this).attr('name') !== undefined && $(this).attr('name').toLowerCase().indexOf('fin') != -1) ||
+                ($(this).attr('class') !== undefined && $(this).attr('class').toLowerCase().indexOf('fin') != -1)) {
+                $(this).addClass('endDate').addClass('endDate' + $('.endDate').length).attr('data-startdate', 'startDate' + $('.endDate').length);
+            }
+        });
+
+        $('.startDate').change(function () {
+            $('.' + $(this).data('enddate')).attr('min', $(this).val());
+        });
+        //============================== toastr ===============================================
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "rtl": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": 300,
+            "hideDuration": 1000,
+            "timeOut": 10000,
+            "extendedTimeOut": 1000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        //============================== Alert & Confirm ===============================================
+        var bloquerAlert = false;
+
+        function viewAlert(msg, tag, autoClose, fntAction) {
+            if (bloquerAlert)
+                return;
+
+            var color = 'dark';
+            var icon = '';
+            var title = '';
+            var animation = 'zoom';
+            var closeAnimation = 'scale';
+
+            if (tag == 'success') {
+                color = 'green';
+                icon = 'icon-checkmark4';
+                title = '{{ "Succès"|trans }}';
+                animation = 'scale';
+                closeAnimation = 'scale';
+            }
+            else if (tag == 'danger') {
+                color = 'red';
+                icon = 'icon-blocked';
+                title = '{{ "Alert"|trans }}';
+                animation = 'rotateY';
+                closeAnimation = 'rotateY';
+            }
+            else if (tag == 'warning') {
+                color = 'orange';
+                icon = 'icon-warning';
+                title = '{{ "Attention"|trans }}';
+                animation = 'rotateYR';
+                closeAnimation = 'rotateYR';
+            }
+            else if (tag == 'info') {
+                color = 'blue';
+                icon = 'icon-info3';
+                title = '{{ "Info"|trans }}';
+                animation = 'rotateX';
+                closeAnimation = 'rotateX';
+            }
+            else if (tag == 'primary') {
+                color = 'purple';
+            }
+            var options = {
+                icon: icon,
+                closeIcon: true,
+                type: color,
+                title: title,
+                content: msg,
+                animationBounce: 2.5,
+                closeAnimation: closeAnimation,
+                animation: animation,
+                buttons: {
+                    btnOk: {
+                        text: 'OK',
+                        btnClass: 'btn-default',
+                        keys: ['enter', 'echap'],
+                    }
+                }
+            };
+            if (autoClose !== undefined && autoClose != null)
+                options.autoClose = 'btnOk|' + autoClose;
+
+            if (fntAction !== undefined)
+                options.buttons.btnOk.action = fntAction;
+
+            $.alert(options);
+        }
+
+        function demandConfirm(title, content, txtConfirm, fntAction) {
+            $.confirm({
+                title: title,
+                content: content,
+                icon: 'icon-question3',
+                closeIcon: true,
+                type: 'blue',
+                buttons: {
+                    confirm: {
+                        text: txtConfirm,
+                        btnClass: 'btn-danger',
+                        keys: ['enter'],
+                        action: fntAction
+                    },
+                    cancel: {
+                        text: 'Non',
+                        btnClass: 'btn-default',
+                        keys: ['echap'],
+                    },
+                }
+            });
+        }
+
+        //========================================================================================================
+
+
+        $('input.money').number(true, 3, ".", "").attr('maxlength', 11);
+        $('input.percent').number(true, 2, ".", "").attr('maxlength', 6);
+
+        $(".styled, .multiselect-container input").uniform({
+            radioClass: 'choice'
+        });
+
+        if (Array.prototype.forEach) {
+            var elems = Array.prototype.slice.call(document.querySelectorAll('.switchery'));
+            elems.forEach(function (html) {
+                var switchery = new Switchery(html);
+            });
+        }
+        else {
+            var elems = document.querySelectorAll('.switchery');
+            for (var i = 0; i < elems.length; i++) {
+                var switchery = new Switchery(elems[i]);
+            }
+        }
+
+        //====================================== Format Money ============================================================================
+        Number.prototype.formatMoney = function (decimals = 3, decimal_separator = ".", thousands_separator = ",") {
+            var n = this,
+                decimals = isNaN(decimals = Math.abs(decimals)) ? 2 : decimals,
+                decimal_separator = decimal_separator == undefined ? "." : decimal_separator,
+                thousands_separator = thousands_separator == undefined ? "," : thousands_separator,
+                s = n < 0 ? "-" : "",
+                i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(decimals))),
+                j = (j = i.length) > 3 ? j % 3 : 0;
+            return s + (j ? i.substr(0, j) + thousands_separator : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands_separator) + (decimals ? decimal_separator + Math.abs(n - i).toFixed(decimals).slice(2) : "");
+        };
+
+        //======================================Integre l' optgroup de Select2 dans la recherche ============================================================================
+        function matchStart(term, text, option) {
+            if (text.toUpperCase().indexOf(term.toUpperCase()) >= 0 || ($(option.element).closest('optgroup').prop('label') !== undefined && $(option.element).closest('optgroup').prop('label').toUpperCase().indexOf(term.toUpperCase()) >= 0)) {
+                return true;
+            }
+            return false;
+        }
+
+        $.fn.select2.amd.require(['select2/compat/matcher'], function (oldMatcher) {
+            $(".select-search-groupby").select2({
+                matcher: oldMatcher(matchStart)
+            })
+        });
+
+        //========================================= Génére message alert =========================================================================
+        function my_alert(msg, status, divalert, scrollTop) {
+            div_alert = $(divalert);
+
+            html_alert = '<div class="alert alert-' + status + '">' +
+                '<button data-dismiss="alert" class="close">&times;</button>' +
+                '<strong>';
+
+
+            switch (status) {
+                case 'success':
+                    html_alert += '<i class="fa fa-check-circle"></i>' +
+                        ' <strong>Succès!</strong>';
+                    break;
+                case 'danger':
+                    html_alert += '<i class="fa fa-times-circle"></i>' +
+                        ' <strong>Erreur!</strong>';
+                    break;
+                case 'warning':
+                    html_alert += '<i class="fa fa-exclamation-triangle"></i>' +
+                        ' <strong>Avertissement!</strong>';
+                    break;
+                case 'info':
+                    html_alert += '<i class="fa fa-info-circle"></i>' +
+                        ' <strong>Information!</strong>';
+                    break;
+                default:
+                    html_alert += '<i class="fa fa-check-circle"></i>' +
+                        ' <strong>Succès!</strong>';
+            }
+
+            html_alert += '</strong> ' + msg + '</div>';
+
+            div_alert.append(html_alert);
+
+            if (scrollTop !== undefined && scrollTop == true)
+                $('html, body').animate({scrollTop: $(divalert).offset().top}, 700, 'swing');
+        }
+
+        //==================================================================================================================
+        $('.startDate').change(function () {
+            $('.' + $(this).data('enddate')).attr('min', $(this).val());
+        });
+        $('.endDate').change(function () {
+            $('.' + $(this).data('startdate')).attr('max', $(this).val());
+        });
+
+        $('#export_database').click(function () {
+            let $this = $(this);
+            let i = $this.find('i');
+            let classI = i.attr('class');
+            i.attr('class', 'icon-spinner3 spinner');
+            $this.addClass('isDisabled');
+
+            $.ajax({
+                url: "{{ path('export_database') }}",
+                complete: function () {
+                    i.attr('class', classI);
+                    $this.removeClass('isDisabled');
+                },
+                success: function (data) {
+                    if (data == 1)
+                        window.open('{{ asset('filesSQL/dip-scolarite.sql') }}');
+                    else
+                        viewAlert(data, 'danger');
+                },
+                error: function (jqXHR) {
+                    my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                }
+            });
+        });
+
+        $('form#import-database').submit(function (e) {
+            e.preventDefault();
+            let i = $('#import_database').find('i');
+            let classI = i.attr('class');
+            i.attr('class', 'icon-spinner3 spinner');
+            $('#import_database').addClass('isDisabled');
+
+            $.ajax({
+                type: "POST",
+                url: $(this).attr('action'),
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                dataType: 'json',
+                complete: function () {
+                    i.attr('class', classI);
+                    $('#import_database').removeClass('isDisabled');
+                    $('form#import-database').html('<input type="file" accept=".sql" id="file-sql" name="fileSQL">');
+                },
+                success: function (json) {
+                    viewAlert(json.msg, json.status, null, function () {
+                        location.reload();
+                    });
+                },
+                error: function (jqXHR) {
+                    my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                }
+            });
+        });
+
+        $(document).on('change', '#file-sql', function () {
+            if ($(this)[0].files[0].name == "")
+                return;
+
+            $('form#import-database').submit();
+        });
+
+        $('#key_license').on('click', function () {
+            swal({
+                    title: "{{ "Clé de license"|trans }}",
+                    text: "<div id='cle-license'>Envoyer le code secret  <b style='color:blue'>{{ app.session.get('code-secret') }}</b> au service technique de DIP pour génére votre propre clé de license</div>",
+                    type: "input",
+                    html: true,
+                    showCancelButton: true,
+                    confirmButtonColor: "#2196F3",
+                    closeOnConfirm: false,
+                    animation: "slide-from-top",
+                    inputPlaceholder: "{{ "Entrer ici votre clé de license"|trans }}"
+                },
+                function (inputValue) {
+                    if (inputValue === false) return false;
+                    if (inputValue === "") {
+                        swal.showInputError("{{ "Veuillez entrer ici votre clé de license"|trans }}!");
+                        return false
+                    }
+
+                    $('div#cle-license').LoadingOverlay("show", {
+                        image: "",
+                        fontawesome: "icon-spinner3 spinner"
+                    });
+
+                    $.ajax({
+                        url: "{{ path('check_cle_license') }}",
+                        data: {cle: inputValue},
+                        success: function (check) {
+                            if (check == 1) {
+                                swal({
+                                    title: "{{ "Félicitation"|trans }}",
+                                    text: "{{ "Votre clé de license a été enregistré avec succès"|trans }}",
+                                    type: "success",
+                                    confirmButtonColor: "#5ac44d"
+                                });
+                            } else {
+                                swal({
+                                    title: "{{ "Attention"|trans }}",
+                                    text: "{{ "Clé de License non valide"|trans }}",
+                                    type: "error",
+                                    confirmButtonColor: "#f32c1c"
+                                });
+                            }
+                        },
+                        error: function (jqXHR) {
+                            my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                        }
+                    });
+                });
+        });
+
+        /*$('#form-impr-atts-pres').submit(function (e) {
+            e.preventDefault();
+            $('#modal-filtre-eleve .modal-body').LoadingOverlay("show", {
+                image: "",
+                fontawesome: "icon-spinner3 spinner"
+            });
+
+            $.ajax({
+                url: $(this).attr('action'),
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                type: "POST",
+                complete: function () {
+                    $('#modal-filtre-eleve .modal-body').LoadingOverlay("hide", true);
+                    $('#modal-filtre-eleve').modal('hide');
+                },
+                success: function (data) {
+                },
+                error: function (jqXHR) {
+                    my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                }
+            });
+        })*/
+
+        $('#form-impr-atts-pres #form_niveau').change();
+
+        {% for type,flash in app.session.flashbag.all %}
+            {% for msg in flash %}
+                viewAlert('{{ msg|raw }}', '{{ type }}');
+            {% endfor %}
+        {% endfor %}
+
+        $('#update_database').click(function () {
+            demandConfirm('{{ "Update base de données"|trans }}','{{ "Update base de données"|trans }}','{{ "Update"|trans }}',function () {
+                window.location.href = '{{ path('update_database') }}';
+            });
+        });
+
+        function ImpressionByDate(etat) {
+            bootbox.dialog({
+                size: 'small',
+                title: "{{ "Punitions & Absences"|trans }}",
+                message: '<label>{{ "Jour"|trans }}:</label><br><input class="form-control" type="date" value="{{ date()|date('Y-m-d') }}" name="jour">',
+                buttons: {
+                    success: {
+                        label: "{{ "Valider"|trans }}",
+                        className: "btn-success",
+                        callback: function () {
+                            window.open("{{ path('impression_punition') }}?etat=" + etat + "&jour=" + $(this).find('input[name="jour"]').val(), '_blank');
+                        }
+                    }, danger: {
+                        label: "{{ "Fermer"|trans }}",
+                        className: "btn-danger"
+                    }
+                }
+            });
+        }
+
+         function ImpressionDocument(etat) {
+                          window.open("{{ path('impression_document') }}?etat=" + etat, '_blank');
+             }
+
+        setInterval(function () {
+            $('li#notification-punitions-absences a').toggleClass('red');
+            $('li#notification-punitions-absences .icon-alert').toggle();
+        }, 500);
+    </script>
+{% endblock %}
+<!-- some script -->
+{% block jquery %}{% endblock %}
+</body>
+</html>

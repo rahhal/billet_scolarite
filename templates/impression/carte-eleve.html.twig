@@ -1,0 +1,77 @@
+{% extends "impression/print.html.twig" %}
+{% set info = InfoGeneral() %}
+
+{% block title %}
+    <title>بطاقة تلميذ</title>
+{% endblock %}
+
+{% block header %}
+    {# {% include "@App/Impression/header.html.twig" %} #}
+  
+{% endblock %}
+{% block style %}
+  <style>
+   @page {
+        size: 8cm 8cm;
+    }
+    @media print {
+        html, body {
+            width: 8cm;
+            min-height: 8cm;
+            padding: 0px;
+        }
+    }
+    td
+     { border-style: none; }
+    </style>
+{% endblock %}
+{% block content %}
+    <table>
+        <tbody>
+         <tr>
+        <td 
+            style="text-align: right; width:400px; heigth:66px;">
+            {% if anneescolaire is not defined or anneescolaire %}<b>السنة الدراسية  :</b> {{ info.annee }}{% endif %}
+            <br><br><br>
+        </td>
+        <td 
+            style="border: 2px solid black; width:66px; heigth:66px; text-align: center;"><b>{{ "Photo"|trans }}</b>
+            <br><br><br>
+        </td>
+        <td></td>
+    </tr>
+    
+        <tr>
+            <td><b> التلميذ (ة)  : </b>&nbsp;&nbsp;&nbsp;{{ eleve.nomPrenom }}</td>
+        </tr>
+        <tr>
+            <td><b> تاريخ الولادة   :</b> &nbsp;&nbsp;&nbsp; {{ eleve.dateNaissance|date('Y/m/d') }} <b> &nbsp;&nbsp;&nbsp; مكانها :</b> {{ eleve.lieuNaissance }}</td>
+        </tr>
+        <tr>
+            <td><b> المؤسسة  : </b>&nbsp;&nbsp;&nbsp; {{ info.etablissement }}  بـ{{ info.ville }}</td>
+        </tr>
+        <tr>
+            <td><b> القسم  :</b> &nbsp;&nbsp;&nbsp; {{ eleve.classeAnneeActuelle }}
+            <br>
+            <br>
+            </td>
+            
+        </tr>
+        {# <tr>
+            <td style="text-align: right; width: 100px; heigth: 66px;"><b>&nbsp;&nbsp;&nbsp; المعرف :  </b>  </td>
+            <td style="text-align: right; width: 200px; heigth: 66px;"> <img src="{{asset('assets/images/data.png')}}" alt="data" style="text-align: right; width: 150px; heigth: 60px;" >  </td>
+            <td></td>
+     </tr> #}
+        
+        </tbody>
+    </table>
+    <table>
+     <tr>
+            <td style="text-align: right; width: 100px; heigth: 66px;"><b>&nbsp;&nbsp;&nbsp; المعرف :  </b>  </td>
+            <td style="text-align: right; width: 300px; heigth: 66px;"> <img src="{{asset('assets/images/data.png')}}" alt="data" style="text-align: right; width: 200px; heigth: 60px;" >  </td>
+            <td></td>
+     </tr>
+    </table>
+    <br><br><br><br>
+   
+{% endblock %}

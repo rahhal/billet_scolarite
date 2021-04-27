@@ -1,0 +1,17 @@
+{% if list is not defined %}<script>{% endif %}
+    $("#table-liste-anneescolaire").bootstrapTable("{{ index is defined ? "updateRow" : "insertRow" }}", {
+        index: {{ index is defined ? index : 0 }},
+        row: {
+        id: '{{ anneescolaire.id }}',
+        annee: '{{ anneescolaire.annee(true) }}',
+        current: '{{ anneescolaire.current|viewBooleanValue|raw }}',
+        directeur: '{{ anneescolaire.directeur }}',
+        survaillant: '{{ anneescolaire.surveillant }}',
+        action: "\n" +
+            // '<a href="#modal-edit-anneescolaire" data-toggle="modal" data-action="{{ path("anneescolaire_edit", {"id": anneescolaire.id}) }}"'+
+            //    'class="btn-edit-anneescolaire"><i class="icon-pencil"></i></a>'
+            '<a href="#" data-toggle="modal" data-action="#"'+
+               'class="btn-edit-anneescolaire"><i class="icon-pencil"></i></a>'
+        }
+    })
+{% if list is not defined %}</script>{% endif %}

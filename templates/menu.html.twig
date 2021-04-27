@@ -1,0 +1,213 @@
+<!-- Main sidebar -->
+<div class="sidebar sidebar-main">
+    <div class="sidebar-content">
+
+        <!-- User menu -->
+        <div class="sidebar-user">
+            <div class="category-content">
+                <div class="media">
+                    {# <a href="#" class="media-left"><img src="{{ asset('assets/images/placeholder.jpg') }}"
+                                                        class="img-circle img-sm" alt=""></a> #}
+                    <div class="media-body">
+                        {# <span class="media-heading text-semibold">{{ app.user.username }}</span> #}
+                        <div class="navigation-header"><h1>{{ "Main"|trans }}</h1> </div>
+                    </div>
+
+                    {# <div class="media-right media-middle">
+                        <ul class="icons-list">
+                            <li>
+                                <a href="#"><i class="icon-cog3"></i></a>
+                            </li>
+                        </ul>
+                    </div> #}
+                </div>
+            </div>
+        </div>
+        <!-- /user menu -->
+
+
+        <!-- Main navigation -->
+        <div class="sidebar-category sidebar-category-visible">
+            <div class="category-content no-padding">
+                <ul class="navigation navigation-main navigation-accordion">
+                    <!-- Main -->
+                    {% if is_granted("ROLE_ADMIN") %}
+                                
+
+                    {# <li class="navigation-header"><span><h1>{{ "Main"|trans }}</h1></span> <i class="icon-menu"
+                                                                                     title="Main pages"></i></li> #}
+                  {#  <li {% if app.request.get('_route') == 'home' %} class="active"{% endif %}>
+                            <a href="{{ path('home') }}"><i class="icon-home4"></i> <span>{{ "Billet d'entrée"|trans }}</span></a></li>
+                    
+                        <li {% if app.request.get('_route') == 'absences' %} class="active"{% endif %}>
+                            <a href="{{ path('absences') }}"><i class="icon-home"></i> <span>{{ "Punitions et absences"|trans }}</span></a></li>
+                      #}
+                        <li>
+                            <a href="#"><i class="icon-info22"></i> <span>{{ "Données Statique"|trans }}</span></a>
+                            <ul>
+                                <li {% if app.request.get('_route') == 'etablissement_new' %} class="active"{% endif %}>
+                                    <a
+                                            href="{{ path('etablissement_new') }}"><i
+                                                class="icon-office"></i>{{ "Etablissement"|trans }}</a>
+                                </li>
+                                <li {% if app.request.get('_route') == 'anneescolaire_index' %} class="active"{% endif %}>
+                                    <a
+                                            href="{{ path('anneescolaire_index') }}"><i
+                                                class=" icon-calendar2"></i>{{ "Annee scolaire"|trans }}</a>
+                                </li>
+                                <li {% if app.request.get('_route') == 'jourferie_index' %} class="active"{% endif %}>
+                                    <a
+                                            href="{{ path('jourferie_index') }}"><i
+                                                class="icon-chair"></i>{{ "JourFeries"|trans }}</a>
+                                </li>
+
+                            </ul>
+                             <li>
+                            <a href="#"><i class="icon-database"></i> <span>{{ "Referentiel"|trans }}</span></a>
+                            <ul>
+                                <li {% if app.request.get('_route') == 'section_index' %} class="active"{% endif %}>
+                                    <a href="{{ path('section_index') }}"><i
+                                                class="icon-graduation"></i>{{ "Section"|trans }}</a>
+                                </li>
+                                <li {% if app.request.get('_route') == 'niveau_index' %} class="active"{% endif %}>
+                                    <a href="{{ path('niveau_index') }}"><i
+                                                class="icon-archive"></i>{{ "Niveau"|trans }}</a>
+                                </li>
+                                <li {% if app.request.get('_route') == 'matiere_index' %} class="active"{% endif %}>
+                                    <a href="{{ path('matiere_index') }}"><i
+                              
+                                                class="icon-bookmark"></i>{{ "Matieres"|trans }}</a>
+                                </li>
+                                 <li {% if app.request.get('_route') == 'enseignant_index' %} class="active"{% endif %}>
+                                    <a href="{{ path('enseignant_index') }}"><i
+                                                class="icon-user-tie"></i>{{ "Enseignant"|trans }}</a>
+                                </li>
+                                <li {% if app.request.get('_route') == 'classe_index' %} class="active"{% endif %}>
+                                    <a href="{{ path('classe_index') }}"><i
+                                                class="icon-design"></i>{{ "Classe"|trans }}</a>
+                                </li>
+                                <li {% if app.request.get('_route') == 'eleve_index' %} class="active"{% endif %}>
+                                    <a href="{{ path('eleve_index') }}"><i
+                                                class="icon-portfolio"></i>{{ "Eleve"|trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                        </li>
+                        <li>
+                            <a href="#"><i class="icon-printer4"></i> <span>{{ "Impression"|trans }}</span></a>
+                            <ul>
+                                <li>
+                                    <a href="#"><span>{{ "Carte élève"|trans }}</span></a>
+                                    <ul>
+                                        <li>
+                                            <a href="#modal-filtre-eleve1" data-toggle="modal">{{ "Carte élève idividuelle"|trans }}</a>
+                                        </li>
+                                        {# <li>
+                                            <a href="#">{{ "Carte élève par classe"|trans }}</a>
+                                        </li> #}
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#modal-filtre-eleve" data-toggle="modal">{{ "Attestation de présence"|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="#"><span>{{ "Rapport Journalier"|trans }}</span></a>
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:void(0);"
+                                               onclick="ImpressionByDate('rapport-journalier');">{{ "Rapport Journalier"|trans }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);"
+                                               onclick="ImpressionByDate('absence-non-reglee');">{{ "Absence Non Réglée"|trans }}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                 <li>
+                                    <a href="#modal-filtre-eleve11" data-toggle="modal">{{ "Carte des renseignements"|trans }}</a>
+                                </li>
+                                 <li>
+                                    <a href="#modal-filtre-eleve2" data-toggle="modal">{{ "Engagement"|trans }}</a>
+                                </li>
+                                 <li>
+                                    <a href="javascript:void(0);"
+                                               onclick="ImpressionDocument('proposition-avertissement');">{{ "Proposition d'avertissement"|trans }}</a>
+                                </li>
+                                 <li>
+                                    <a href="javascript:void(0);"
+                                               onclick="ImpressionDocument('demande-parent');">{{ "Demande convocation parent"|trans }}</a>
+                                </li>
+                                 <li>
+                                    <a href="javascript:void(0);"
+                                               onclick="ImpressionDocument('rapport');">{{ "Rapport"|trans }}</a>
+                                </li>
+                                 <li>
+                                    <a href="#" data-toggle="modal">{{ "Révéler les absences pendant les devoirs"|trans }}</a>
+                                </li>
+                                 <li>
+                                    <a href="javascript:void(0);"
+                                               onclick="ImpressionDocument('accident');">{{ "Certificat garantissant d'un accident"|trans }}</a>
+                                </li>
+                                 <li>
+                                    <a href="#modal-filtre-eleve3" data-toggle="modal">{{ "Questionnaire"|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="#"><span>{{ "Convocations"|trans }}</span></a>
+                                    <ul>
+                                        <li>
+                                            <a href="#modal-filtre-eleve4" data-toggle="modal">{{ "Convocation parent"|trans }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="#modal-filtre-eleve5" data-toggle="modal">{{ "Convocation élève"|trans }}</a>
+                                        </li>
+                                         <li>
+                                            <a href="#modal-filtre-eleve6" data-toggle="modal">{{ "مذاكرة تكميلية"|trans }}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                 {#<li>
+                                    <a href="#"><span>{{ "Notification"|trans }}</span></a>
+                                    <ul>
+                                        <li>
+                                            <a href="#modal-filtre-eleve7" data-toggle="modal">{{ "Notification 1er d'absence"|trans }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="#modal-filtre-eleve8" data-toggle="modal">{{ "Notification 2éme d'absence"|trans }}</a>
+                                        </li>
+                                         <li>
+                                            <a href="#modal-filtre-eleve9" data-toggle="modal">{{ "Notification 3éme d'absence"|trans }}</a>
+                                        </li>
+                                         <li>
+                                            <a href="#modal-filtre-eleve10" data-toggle="modal">{{ "Avertissement de radiation"|trans }}</a>
+                                        </li>
+                                         <li>
+                                            <a href="javascript:void(0);"
+                                               onclick="ImpressionByDate('absence-non-reglee');">{{ "Avis de radiation"|trans }}</a>
+                                        </li>
+                                         
+                                    </ul>
+                                </li>#}
+                            </ul>
+                        </li>
+                    {# {% endif %} #}
+
+  {% elseif not is_granted('ROLE_ADMIN') %}
+      <li {% if app.request.get('_route') == 'super_admin_index' %} class="active"{% endif %}>
+          {# <a href="{{ path('super_admin_index') }}"><i #}
+                              <a href="#"><i class="icon-user"></i>{{ "Administration"|trans }}</a>
+      </li>
+      {#<li {% if app.request.get('_route') == 'user_user_index' %} class="active"{% endif %}>
+                                        <a href="{{ path('user_user_index') }}"><i
+                                                    class="icon-user"></i>{{ "الحريف"|trans }}</a></li>#}
+      <li {% if app.request.get('_route') == 'admin_index' %} class="active"{% endif %}>
+          <a href="{{ path('user_user_index') }}"><i class="icon-user"></i>{{ "User"|trans }}</a>
+      </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <!-- /main navigation -->
+
+    </div>
+</div>
+<!-- /main sidebar -->

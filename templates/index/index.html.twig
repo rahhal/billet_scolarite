@@ -1,0 +1,921 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Billet d'entrée"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('assets/css/fullcalendar.min.css') }}" rel="stylesheet"
+          type="text/css">
+    <link href="{{ asset('assets/css/scheduler.min.css') }}" rel="stylesheet"
+          type="text/css">
+{% endblock %}
+
+
+{% block body %}
+    <style>
+        {% if app.request.locale == 'ar' %}
+        .fc-view-container .fc-view > table th, .fc-view-container .fc-view > table td {
+            border-right-width: thin;
+        }
+
+        {% endif %}
+        small {
+            color: #999999;
+        }
+
+{#        {% if not is_granted('ROLE_ADMIN') %}#}
+        td {
+            padding: 5px !important;
+        }
+
+        th[data-field="x"] {
+            width: 50px;
+            text-align: center;
+        }
+
+        th[data-field="ordre"] {
+            width: 60px;
+        }
+
+        tr td:nth-child(1), #table-liste-eleve tr td:nth-child(2), #list-punitions-absences tr td:nth-last-child(1) {
+            text-align: center;
+
+        }
+/* .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td
+ {
+    padding: 2px 10px;
+    border color: #0e0000;
+} */
+{#        {% endif %}#}
+        .page-header-content {
+            display: none;
+        }
+
+        .page-title {
+            padding: 10px 0 10px 10px;
+        }
+
+        .page-header.page-header-default {
+            margin-bottom: 7px;
+        }
+
+        .panel-flat > .panel-heading {
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+
+        .lbl-liste-punitions-absences {
+            /* font-style: italic; */
+            /* text-decoration: underline; */
+            font-weight: bold;
+            position: relative;
+            /* top: 20px; */
+            color: #4267b2;
+            display: none;
+        }
+
+#list-punitions-absences {
+    background-color: #fcfcfc;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+
+        div.fc-center {
+            cursor: pointer;
+        }
+
+        .fc-license-message, .fixed-table-loading {
+            display: none;
+        }
+
+        .nav-tabs-vertical > .nav-tabs, .fc-resource-area.fc-widget-header {
+            width: 150px;
+        }
+        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 2px 10px;
+    line-height: 1.5384616;
+    vertical-align: top;
+    border-top: 1px solid #171616;
+}
+    </style>
+    
+  {% if is_granted("ROLE_ADMIN") %}
+
+    <div class="page-header page-header-default">
+            <div class="breadcrumb-line">
+            
+                    <ul class="breadcrumb">
+                                        <li><a href="index.html"><i class="icon-home2 position-left"></i> {{ "Home"|trans }}</a></li>
+                                        <li class="active">{{ "Billet d'entrée"|trans }}</li>
+                    </ul>
+
+                    {% include "layout.html.twig" %} 
+            </div>
+
+    </div>
+
+
+    <div class="panel panel-flat">
+        {# <div class="panel-heading">
+            <h5 class="panel-title">{{ "Billet d'entrée"|trans }}<a
+                        class="heading-elements-toggle"><i class="icon-more"></i></a></h5>
+        </div> #}
+
+
+        <div class="panel-body table-responsive">
+                <div class="row">
+                    <div class="col-md-6" id="external-events">
+                        <div class="content-group" id="external-events">
+                            {# <h6>{{ "Données Eleve"|trans }}</h6> #}
+                            <div class="fc-events-container content-group" id="filtre-classe">
+                            <h2 style="color: #4267b2;">{{ "Données Eleve"|trans }}</h2>
+                                {# {{ render(controller('eleve:formFiltreEleve',{idDiv:'filtre-classe',eleve:1,version:'-v2'})) }} #}
+                              {{ render(controller('App\\Controller\\EleveController::formFiltreEleveAction',{idDiv:'filtre-classe',eleve:1,version:'-v2'})) }}
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="list-punitions-absences">
+                        <label class="lbl-liste-punitions-absences" style="margin-top:10px;"><h2>{{ "Liste des absences non règlées"|trans }}</h2></label>
+                        <table class="table table-striped" id="table-liste-absence" data-toggle="table"
+                               data-search="true"
+                               data-pagination="true">
+                            <thead>
+                            <tr>
+                                <th data-field="id"></th>
+                                <th data-field="x"><input type="checkbox" class="_styled"
+                                                          onclick="$('#table-liste-absence .chk-eleves').prop('checked',$(this).is(':checked')).uniform();">
+                                </th>
+                                <th data-field="eleve">{{ "Eleve"|trans }}</th>
+                                <th data-field="dateDebut">{{ "Date"|trans }}</th>
+                                <th data-field="nbrJour">{{ "Nbr Jour"|trans }}</th>
+
+                                <th class="action" data-field="action"> <button type="button" class="btn btn-rounded bg-success-600" style="margin-right: 10px" onclick="reglementTous('absence');"> {{ "Réglement Absence"|trans }}</button>
+                                
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <hr>
+                        <label class="lbl-liste-punitions-absences"><h2>{{ "Liste des exclusions non règlées"|trans }}</h2></label>
+                        <table class="table table-striped" id="table-liste-exclusion" data-toggle="table"
+                               data-search="true"
+                               data-pagination="true">
+                            <thead>
+                            <tr>
+                                <th data-field="id"></th>
+                                <th data-field="x"><input type="checkbox" class="_styled"
+                                                          onclick="$('#table-liste-exclusion .chk-eleves').prop('checked',$(this).is(':checked')).uniform();">
+                                </th>
+                                <th data-field="eleve">{{ "Eleve"|trans }}</th>
+                                <th data-field="dateDebut">{{ "Date"|trans }}</th>
+                                <th data-field="enseignant">{{ "Enseignant"|trans }}</th>
+                                <th data-field="raison">{{ "Raison"|trans }}</th>
+                                <th class="action" data-field="action">
+                                     <button type="button" class="btn btn-rounded bg-success-600" style="margin-right: 30px" onclick="reglementTous('exclusion');"> {{ "Réglement Exclusion"|trans }}</button>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <hr>
+                    </div>
+                </div>
+            
+        </div>
+        <div id="dialog-action" hidden>
+            <div class="row">
+                <div class="col-md-6"><b>{{ "Classe"|trans }} : </b>
+                    <small id="classe"></small>
+                </div>
+                <div class="col-md-6"><b>{{ "Eleve"|trans }} : </b>
+                    <small id="eleve"></small>
+                </div>
+                <br>
+                <div class="col-md-4"><b>{{ "Date"|trans }} : </b>
+                    <small id="date"></small>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group pt-15">
+                <div class="radio" id="delete">
+                    <label>
+                        <input type="radio" name="action" class="styled0" value="delete">
+                        {{ "Suppression"|trans }}
+                    </label>
+                </div>
+
+                <div class="radio" id="reglement">
+                    <label>
+                        <input type="radio" name="action" class="styled0" value="reglement">
+                        {{ "Règlement"|trans }}
+                    </label>
+                </div>
+
+                <div class="radio" id="print-annance-absc-1">
+                    <label>
+                        <input type="radio" name="action" class="styled0" value="print-annance-absc-1">
+                        {{ "Impression premiére annonce d'absence"|trans }}
+                    </label>
+                </div>
+
+                <div class="radio" id="print-annance-absc-2">
+                    <label>
+                        <input type="radio" name="action" class="styled0" value="print-annance-absc-2">
+                        {{ "Impression 2 éme annonce d'absence"|trans }}
+                    </label>
+                </div>
+
+                <div class="radio" id="print-annance-absc-3">
+                    <label>
+                        <input type="radio" name="action" class="styled0" value="print-annance-absc-3">
+                        {{ "Impression 3 éme annonce d'absence"|trans }}
+                    </label>
+                </div>
+
+                <div class="radio" id="print-avertissement">
+                    <label>
+                        <input type="radio" name="action" class="styled0" value="print-avertissement">
+                        {{ "Impression avertissement"|trans }}
+                    </label>
+                </div>
+
+                <div class="radio" id="print-expulsion">
+                    <label>
+                        <input type="radio" name="action" class="styled0" value="print-expulsion">
+                        {{ "Impression expulsion"|trans }}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div id="dialog" hidden>
+            <div class="row">
+                <div class="col-md-4"><b>{{ "Classe"|trans }} : </b>
+                    <small id="classe"></small>
+                </div>
+                <div class="col-md-4"><b>{{ "Eleve"|trans }} : </b>
+                    <small id="eleve"></small>
+                </div>
+                <div class="col-md-4"><b>{{ "Date"|trans }} : </b>
+                    <small id="date"></small>
+                </div>
+            </div>
+            <hr>
+
+            {% set types = ['absence','exclusion','retard'] %}
+            {% if is_granted('ROLE_ADMIN') %}
+                {% set types = types|merge(['avertissement','expulsion','conseil','elimine']) %}
+            {% endif %}
+
+            <div class="tabbable nav-tabs-vertical0 nav-tabs-left">
+
+                {# <ul class="nav nav-tabs nav-tabs-highlight" {% if not is_granted('ROLE_ADMIN') %}hidden{% endif %}> #}
+                {# <ul class="nav nav-tabs nav-tabs-highlight" {% if not is_granted('ROLE_ADMIN') %}hidden{% endif %}> #}
+
+                {% for type in types %}
+                        {# <li{% if loop.first %} class="active"{% endif %}> #}
+                        <a id="tab-{{ type }}" href="#form-{{ type }}"   data-toggle="tab">
+                        {# <i class="icon-bookmark2" style="color: {{ colors[type] }}"></i> #}
+                        {# {{ type|title|trans }}  #}
+                            </a>
+{#                        </li>#}
+                    {% endfor %}
+                {# </ul> #}
+
+                <div class="tab-content">
+                    {% for type in types %}
+                        <div class="tab-pane{% if loop.first %} active{% endif %}" id="###form-{{ type }}">
+                            {% set form = _context['form_'~type] %}
+                            {{ form_start(form,{'attr':{'id':'form_'~type}}) }}
+                            {# {{ include('punitionsAbsences:form-punitions-absences1.html.twig',{form:form,type:type|upper}) }} #}
+                            {{ include("punitions_absences/form-punitions-absences1.html.twig",{form:form,type:type|upper}) }}
+    {# {{ include("enseignant/item.html.twig",{"enseignant":enseignant,"list":true}) }} #}
+
+                            {{ form_end(form) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="script"></div>
+    <div id="details-update-soft" hidden>{{ app.session.get('update-soft')|raw }}</div>
+     {% endif    %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset("assets/js/plugins/notifications/sweet_alert.min.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("assets/js/plugins/notifications/bootbox.min.js") }}"></script>
+
+    <script type="text/javascript" src="{{ asset("assets/js/plugins/ui/moment/moment.min.js") }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('assets/js/fullcalendar.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('assets/js/scheduler.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset("assets/js/plugins/ui/fullcalendar/lang/" ~ (app.request.locale == 'ar' ? 'ar-tn' : 'fr') ~ ".js") }}"></script>
+{% endblock %}
+
+{% block jquery %}
+    <script>
+        $(document).ready(function () {
+            $("#table-liste-absence").bootstrapTable("hideColumn", "id");
+            $("#table-liste-exclusion").bootstrapTable("hideColumn", "id");
+            //$("#table-liste-retard").bootstrapTable("hideColumn", "id");
+        });
+
+        function loadAbsence() {
+            $("#table-liste-absence").bootstrapTable('removeAll');
+            $("#table-liste-exclusion").bootstrapTable('removeAll');
+            //$("#table-liste-retard").bootstrapTable('removeAll');
+
+            $('#list-punitions-absences').LoadingOverlay("show", {
+                image: "",
+                fontawesome: "icon-spinner3 spinner"
+            });
+
+            $.ajax({
+                url: '{{ path('load_punitions_absences') }}',
+                data: {classe: $('#form_classe').val()},
+                dataType: 'html',
+                complete: function () {
+                    $('#list-punitions-absences').LoadingOverlay("hide", true);
+                },
+                success: function (content) {
+                    $('#script').html(content);
+                    $('.lbl-liste-punitions-absences').show();
+                    $("#table-liste-absence .styled").uniform();
+                    $("#table-liste-exclusion .styled").uniform();
+                },
+                error: function (jqXHR) {
+                    my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                }
+            });
+        }
+
+        let $fullcalendar = $('.fullcalendar-external');
+
+        $('#form_section').change();
+        $('#form_niveau').change();
+        $('#form_classe').change();
+
+        $(document).on('change', '#filtre-classe #form_classe', function () {
+            loadPunitionsAbsences();
+        });
+
+        function loadPunitionsAbsences() {
+            $fullcalendar.fullCalendar('refetchResources');
+            $fullcalendar.fullCalendar('refetchEvents');
+            loadAbsence();
+        }
+
+        loadPunitionsAbsences();
+
+        // Initialize the calendar
+        let doubleClick = false;
+        let EVENT;
+       /* $fullcalendar.fullCalendar({
+            defaultView: 'timelineMonth',
+            header: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'timelineDay,timelineWeek,timelineMonth'
+            },
+            {% if app.request.locale == 'ar' %}
+            isRTL: true,
+            {% endif %}
+            eventRender: function (eventObj, element, view) {
+                element.find('.fc-title').html(eventObj.title);
+                element.find('.fc-description').html(eventObj.description);
+
+                let $update = $('<span id="update-event-' + eventObj.id + '" /> ');
+                let $del = $('<span class="del-event" id="del-event-' + eventObj.id + '" /> ');
+                if (view.name == 'listDay') {
+                    element.find(".fc-list-item-time").append($update);
+                    element.find(".fc-list-item-time").append($del);
+                } else {
+                    element.find(".fc-content").prepend($update);
+                    element.find(".fc-content").prepend($del);
+                }
+                $update.on('click', function () {
+                    eventObj.end = EVENT.end;
+                    eventObj.title = EVENT.title;
+                    eventObj.reglee = EVENT.reglee;
+                    $fullcalendar.fullCalendar('updateEvent', eventObj);
+                });
+                $del.on('click', function () {
+                        eventObj.action = "remove";
+                        eventObj.title = "<i class='icon-spinner3 spinner'></i> {{ "Suppression"|trans }} ...";
+                        eventObj.color = "#ddd";
+
+                        $fullcalendar.fullCalendar('updateEvent', eventObj);
+                        $.ajax({
+                            url: '{{ path('delete_event',{id:'_id_'}) }}'.replace('_id_', eventObj.id),
+                            type: "POST",
+                            success: function (notif) {
+                                $fullcalendar.fullCalendar('removeEvents', eventObj.id);
+                                toastr['success']('{{ "Élément supprimé avec succes"|trans }}');
+
+                                if (notif>0)
+                                    $('li#notification-punitions-absences').show();
+                                else
+                                    $('li#notification-punitions-absences').hide();
+                            },
+                            error: function (jqXHR) {
+                                my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                            }
+                        });
+                });
+
+                element.popover({
+                    title: eventObj.title,
+                    content: eventObj.description,
+                    trigger: 'hover',
+                    placement: 'top',
+                    container: 'body'
+                });
+            },
+            resourceLabelText: '{{ "Eleves"|trans }}',
+            resources: function (callback) {
+                $.ajax({
+                    url: "{{ path('eleves') }}",
+                    data: {
+                        'classe': $('#form_classe').val()
+                    },
+                    success: function (data) {
+                        callback(data);
+                    }
+                });
+            },
+            eventAfterAllRender: function (view) {
+                let th = $('th[data-date="' + moment().format("YYYY-MM-DD") + '"]').last().offset();
+                if (th !== undefined)
+                    $('.fc-scroller').scrollLeft(0).scrollLeft(th.left - screen.width / 2);
+            },
+            events: function (start, end, timezone, callback) {
+                $fullcalendar.LoadingOverlay("show", {
+                    image: "",
+                    fontawesome: "icon-spinner3 spinner"
+                });
+
+                $.ajax({
+                    url: '{{ path('events') }}',
+                    dataType: 'json',
+                    data: {
+                        date: $fullcalendar.fullCalendar('getDate').format(),
+                        classe: $('#form_classe').val()
+                    },
+                    complete: function () {
+                        $fullcalendar.LoadingOverlay("hide", true);
+                    },
+                    success: function (data) {
+                        let events = [];
+                        $.each(data, function (i, item) {
+                            events.push(item);
+                        });
+                        callback(events);
+                    }
+                });
+            },
+            eventClick: function (calEvent, jsEvent, view) {
+                $('div#dialog-action .radio').addClass('hidden');
+                $('div#dialog-action .radio#delete').removeClass('hidden');
+
+                $('div#dialog-action #classe').html(calEvent.classe);
+                $('div#dialog-action #eleve').html(calEvent.eleve);
+                $('div#dialog-action #date').html(calEvent.debut);
+
+                switch (calEvent.title) {
+                    case "absence":
+                        if (!calEvent.reglee)
+                            $('div#dialog-action .radio#reglement').removeClass('hidden');
+                        switch (calEvent.notif) {
+                            case 0:
+                                $('div#dialog-action .radio#print-annance-absc-1').removeClass('hidden');
+                                break;
+                            case 1:
+                                $('div#dialog-action .radio#print-annance-absc-2').removeClass('hidden');
+                                break;
+                            case 2:
+                                $('div#dialog-action .radio#print-annance-absc-3').removeClass('hidden');
+                        }
+                        break;
+                    case "exclusion":
+                        $('div#dialog-action .radio#reglement').removeClass('hidden');
+                        break;
+                    case "avertissement":
+                        $('div#dialog-action .radio#print-avertissement').removeClass('hidden');
+                        break;
+                    case "expulsion":
+                        $('div#dialog-action .radio#print-expulsion').removeClass('hidden');
+                        break;
+                    case "retard":
+                        $('div#dialog-action .radio#reglement').removeClass('hidden');
+                }
+                bootbox.dialog({
+                    size: 'small',
+                    title: calEvent.title,
+                    message: $('div#dialog-action').html(),
+                    buttons: {
+                        success: {
+                            label: "{{ "Confirmer"|trans }}",
+                            className: "btn-success",
+                            callback: function () {
+                                switch ($('.bootbox-body input[name="action"]:checked').val()) {
+                                    case "delete":
+                                        demandConfirm(language.confirmSupp.title, language.confirmSupp.msg, language.confirmSupp.btn, function () {
+                                            $('span#del-event-' + calEvent.id).click();
+                                        });
+                                        break;
+                                    case "reglement":
+                                        document.getElementById('date-regle').valueAsDate = new Date();
+                                        $('input#id-punition-absence').val(calEvent.id);
+                                        $('#modal-reglement').modal('show');
+                                        break;
+                                    case "print-annance-absc-1":
+                                        impression('notification-absence1', calEvent.id);
+                                        break;
+                                    case "print-annance-absc-2":
+                                        impression('notification-absence2', calEvent.id);
+                                        break;
+                                    case "print-annance-absc-3":
+                                        impression('notification-absence3', calEvent.id);
+                                        break;
+                                    case "print-avertissement":
+                                        impression('avertissement', calEvent.id);
+                                        break;
+                                    case "print-expulsion":
+                                        impression('notification-elimination', calEvent.id);
+                                }
+                            }
+                        }, danger: {
+                            label: "{{ "Annuler"|trans }}",
+                            className: "btn-danger"
+                        }
+                    }
+                });
+            },
+            dayClick: function (date, jsEvent, view, resourceObj) {
+                if (!doubleClick) {
+                    doubleClick = true;
+                    setTimeout(function () {
+                        doubleClick = false;
+                    }, 700);
+                }
+                else {
+                    bootbox.dialog({
+                        size: 'large',
+                        title: "{{ "Punitions & Absences"|trans }}",
+                        message: $('div#dialog').html().replace(/###/g, ''),
+                        buttons: {
+                            success: {
+                                label: "{{ "Enregistrer"|trans }}",
+                                className: "btn-success",
+                                callback: function () {
+                                    let id = Math.floor(Math.random() * (100 + 1) + 1);
+                                    event = {
+                                        id: id,
+                                        title: "<i class='icon-spinner3 spinner'></i> {{ "Ajout"|trans }} ...",
+                                        color: '#ddd',
+                                        start: date.format(),
+                                        resourceId: resourceObj.id,
+                                        action: "add"
+                                    };
+                                    $fullcalendar.fullCalendar('renderEvent', event);
+
+                                    $.ajax({
+                                        type: "POST",
+                                        data: $('.bootbox-body .tab-pane.active form').serialize(),
+                                        dataType: 'json',
+                                        success: function (events) {
+                                            $fullcalendar.fullCalendar('removeEvents', id);
+                                            if (events.notif === undefined)
+                                                $fullcalendar.fullCalendar('renderEvents', events);
+                                            else {
+                                                $fullcalendar.fullCalendar('renderEvents', events.events);
+                                                if (events.notif)
+                                                    $('li#notification-punitions-absences').show();
+                                                else
+                                                    $('li#notification-punitions-absences').hide();
+                                            }
+                                            toastr['success']('{{ "Élément ajouté avec succes"|trans }}');
+                                        },
+                                        error: function (jqXHR) {
+                                            my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                                        }
+                                    });
+                                }
+                            }, danger: {
+                                label: "{{ "Annuler"|trans }}",
+                                className: "btn-danger"
+                            }
+                        }
+                    });
+
+                    $('select.classe').val($('#form_classe').val());
+                    $('select.eleve').val(resourceObj.id);
+                    $('input.dateDebut').val(date.format());
+
+                    $('small#classe').html($('#form_classe option:selected').text());
+                    $('small#eleve').html($('select.eleve option:selected').first().text());
+                    $('small#date').html(date.format());
+                }
+            },
+        });*/
+
+        function impression(type, id) {
+            window.open('{{ path('impression_punition') }}?id=' + id + '&etat=' + type, '_blank');
+        }
+
+        $(document).on('click', 'a.print-billet-entree', function () {
+            let dialog_load = bootbox.dialog({
+                title: "{{ "Punitions & Absences"|trans }}",
+                message: '<h6>{{ "Impression Encours ..."|trans }} <i class="icon-spinner3 spinner"></i></h6>'
+            });
+            $.ajax({
+                url: $(this).data('href'),
+                dataType: 'html',
+                complete: function () {
+                    dialog_load.find(".bootbox-close-button").trigger("click");
+                },
+                success: function (html) {
+                    WinPrintHTML(html);
+                },
+                error: function (jqXHR) {
+                    my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                }
+            });
+        });
+
+        // let xhr = new XMLHttpRequest; xhr.open("PUT", url); xhr.send(JSON.stringify(donnees));
+
+        $('div.fc-center').click(function () {
+            bootbox.dialog({
+                size: 'small',
+                title: "{{ "Punitions & Absences"|trans }}",
+                message: '<input class="form-control" type="month" name="bdaymonth">',
+                buttons: {
+                    success: {
+                        label: "{{ "Valider"|trans }}",
+                        className: "btn-success",
+                        callback: function () {
+                            $fullcalendar.fullCalendar('gotoDate', $('input[name="bdaymonth"]').val() + "-01");
+                        }
+                    }, danger: {
+                        label: "{{ "Fermer"|trans }}",
+                        className: "btn-danger"
+                    }
+                }
+            });
+        });
+
+        function addPunitionAbsence(type) {
+            if ($('#filtre-classe .chk-eleves:checked').length == 0) {
+                viewAlert('{{ "Veuillez sélectionner au moins un éléve"|trans }}', "danger");
+                return;
+            }
+            document.getElementById('absence_dateDebut').valueAsDate = new Date();
+
+            bootbox.dialog({
+                size: 'large',
+                title: "{{ "Punitions & Absences"|trans }}",
+                message: $('div#dialog').html().replace(/###/g, ''),
+                buttons: {
+                    success: {
+                        label: "{{ "Enregistrer"|trans }}",
+                        className: "btn-success",
+                        callback: function () {
+                            $('table#table-liste-' + type).LoadingOverlay("show", {
+                                image: "",
+                                fontawesome: "icon-spinner3 spinner"
+                            });
+
+                            $.ajax({
+                                type: "POST",
+                                data: $('.bootbox-body .tab-pane.active form').serialize(),
+                                dataType: 'html',
+                                complete: function () {
+                                    $('table#table-liste-' + type).LoadingOverlay("hide", true);
+                                },
+                                success: function (content) {
+                                    WinPrintHTML(content);
+                                    //$('#script').html(content);
+                                    toastr['success']('{{ "Élément ajouté avec succes"|trans }}');
+                                },
+                                error: function (jqXHR) {
+                                    my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                                }
+                            });
+                        }
+                    }, danger: {
+                        label: "{{ "Annuler"|trans }}",
+                        className: "btn-danger"
+                    }
+                }
+            });
+
+            let ids = [];
+            $('#filtre-classe .chk-eleves:checked').each(function () {
+                ids.push($(this).val());
+            });
+            
+            $('div#form-' + type + ' select[name="eleves[]"]').val(ids);
+
+            $('#tab-' + type).click();
+
+            $('div#form-' + type + ' #' + type + '_dateDebut').val($('#absence_dateDebut').val());
+            $('div#form-' + type + ' .classe').val($('#form_classe').val()).change();
+
+            $('small#classe').html($('#form_classe option:selected').text());
+            let eleves = [];
+            $('select[name="eleves[]"] option:selected').each(function () {
+                eleves.push($(this).text())
+            });
+            $('small#eleve').html(eleves.join(', '));
+            $('small#date').html($('#absence_dateDebut').val());
+        }
+
+        $(document).on('click', '.btn-delete-absence', function () {
+            let url = $(this).data('action');
+            let id = $(this).data('id');
+            let $td = $(this).closest('td');
+            let fntAction = function () {
+                $td.html('<i class="icon-spinner2 spinner"></i>');
+                $.ajax({
+                    url: url,
+                    success: function () {
+                        $('#table-liste-absence').bootstrapTable('remove', {
+                            field: 'id',
+                            values: id.toString()
+                        });
+                    },
+                    error: function (jqXHR) {
+                        my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                    }
+                });
+            };
+            demandConfirm(language.confirmSupp.title, language.confirmSupp.msg, language.confirmSupp.btn, fntAction);
+        });
+
+        $(document).on('click', '.btn-delete-exclusion', function () {
+            let url = $(this).data('action');
+            let id = $(this).data('id');
+            let $td = $(this).closest('td');
+            let fntAction = function () {
+                $td.html('<i class="icon-spinner2 spinner"></i>');
+                $.ajax({
+                    url: url,
+                    success: function () {
+                        $('#table-liste-exclusion').bootstrapTable('remove', {
+                            field: 'id',
+                            values: id.toString()
+                        });
+                    },
+                    error: function (jqXHR) {
+                        my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                    }
+                });
+            };
+            demandConfirm(language.confirmSupp.title, language.confirmSupp.msg, language.confirmSupp.btn, fntAction);
+        });
+
+        $(document).on('click', '.btn-delete-retard', function () {
+            let url = $(this).data('action');
+            let id = $(this).data('id');
+            let $td = $(this).closest('td');
+            let fntAction = function () {
+                $td.html('<i class="icon-spinner2 spinner"></i>');
+                $.ajax({
+                    url: url,
+                    success: function () {
+                        $('#table-liste-retard').bootstrapTable('remove', {
+                            field: 'id',
+                            values: id.toString()
+                        });
+                    },
+                    error: function (jqXHR) {
+                        my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                    }
+                });
+            };
+            demandConfirm(language.confirmSupp.title, language.confirmSupp.msg, language.confirmSupp.btn, fntAction);
+        });
+
+        $('#form-reglement').submit(function (e) {
+            e.preventDefault();
+            $('#modal-reglement .modal-body').LoadingOverlay("show", {
+                image: "",
+                fontawesome: "icon-spinner3 spinner"
+            });
+
+            $.ajax({
+                url: $(this).attr('action'),
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                type: "POST",
+                dataType: 'json',
+                complete: function () {
+                    $('#modal-reglement .modal-body').LoadingOverlay("hide", true);
+                    $('#modal-reglement').modal('hide');
+                },
+                success: function (json) {
+                    {% if is_granted('ROLE_ADMIN') %}
+                    EVENT = json;
+                    $('span#update-event-' + json.id).click();
+                    {% else %}
+                    WinPrintHTML(json.content);
+                    $.each(json.index, function (i, idx) {
+                        removeFromBootstrapTable(json.type, idx);
+                    });
+                    //$('#script').html(json.content);
+                    {% endif %}
+                },
+                error: function (jqXHR) {
+                    my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                }
+            });
+        })
+
+        function reglementTous(type) {
+            let ids = [];
+            $('#table-liste-' + type + ' .chk-eleves:checked').each(function () {
+                ids.push($(this).val());
+            });
+
+            if (ids.length == 0) {
+                viewAlert('{{ "Veuillez sélectionner au moins un élément"|trans }}', "danger");
+                return;
+            }
+            let title = '{{ "Règlement Retard"|trans }}';
+            if (type == 'absence')
+                title = '{{ "Règlement Absence"|trans }}';
+            if (type == 'exclusion')
+                title = '{{ "Règlement Exclusion"|trans }}';
+            $('#modal-reglement .modal-title').html(title);
+            document.getElementById('date-regle').valueAsDate = new Date();
+            $('input#id-punition-absence').val(ids.join(','));
+            $('#modal-reglement').modal('show');
+        }
+
+        function impressionTous(type, $ids) {
+            let ids = [];
+            if ($ids === undefined)
+                $('#table-liste-' + type + ' .chk-eleves:checked').each(function () {
+                    ids.push($(this).val());
+                    removeFromBootstrapTable(type, $(this).val());
+                });
+            else
+                ids = $ids;
+
+            if (ids.length == 0) {
+                viewAlert('{{ "Veuillez sélectionner au moins un éléve"|trans }}', "danger");
+                return;
+            }
+            let dialog_load = bootbox.dialog({
+                title: "{{ "Punitions & Absences"|trans }}",
+                message: '<h6>{{ "Impression Encours ..."|trans }} <i class="icon-spinner3 spinner"></i></h6>'
+            });
+            $.ajax({
+                url: "{{ path('print_billet_entree') }}",
+                data: {ids: ids},
+                dataType: 'html',
+                complete: function () {
+                    dialog_load.find(".bootbox-close-button").trigger("click");
+                },
+                success: function (html) {
+                    WinPrintHTML(html);
+                },
+                error: function (jqXHR) {
+                    my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                }
+            });
+        }
+
+        function WinPrintHTML(html) {
+            var WinPrint =
+                window.open('', '', 'left=0,top=0');
+            WinPrint.document.write(html);
+            WinPrint.document.close();
+            WinPrint.focus();
+            //WinPrint.print();
+            WinPrint.close();
+        }
+
+        $('._styled').uniform();
+
+        {% if is_granted('ROLE_ADMIN') and app.session.get('update-soft') %}
+        demandConfirm('{{ "Mettre à jour application"|trans }}', '{{ "Il y'a  des mise à jour en ligne"|trans }}:' + "\n" + $('#details-update-soft').html(), '{{ "Mettre à jour"|trans }}', function () {
+            window.location.href = '{{ path('git_pull') }}';
+        });
+        {% endif %}
+    </script>
+{% endblock %}
+

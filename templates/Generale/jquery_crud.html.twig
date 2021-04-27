@@ -1,0 +1,348 @@
+<script>
+    {% if pagination is defined %}
+
+    if ($('.pagination ul').length > 0)
+        $('#show-page').removeClass('hidden');
+
+    var form_filtre_serialize = '';
+    var sort = 'id';
+    var order = 'DESC';
+    var limit = $('select[name="limit"]').val();
+
+    $('select[name="limit"]').change(function () {
+        limit = $(this).val();
+
+        $('#table-liste-{{ entity }} tbody').LoadingOverlay("show", {image: "", fontawesome: "icon-spinner3 spinner"});
+        let paramFiltre = form_filtre_serialize + (form_filtre_serialize != "" ? '&' : '');
+        $.ajax({
+            type: "GET",
+            data: paramFiltre + "sort=" + sort + "&order=" + order + "&limit=" + limit,
+            dataType: 'json',
+            complete: function () {
+                $('#table-liste-{{ entity }} tbody').LoadingOverlay("hide", true);
+            },
+            success: function (json) {
+                $('#table-liste-{{ entity }} tbody').html(json.content);
+                $('.pagination').html(json.pagination);
+            },
+            error: function (jqXHR) {
+                my_alert(jqXHR.responseText, 'danger', '#message-alert');
+            }
+        });
+    });
+
+    function routeBringer(route) {
+        $('#table-liste-{{ entity }} tbody').LoadingOverlay("show", {image: "", fontawesome: "icon-spinner3 spinner"});
+        let paramFiltre = form_filtre_serialize + (form_filtre_serialize != "" ? '&' : '');
+        $.ajax({
+            type: "GET",
+            url: route,
+            data: paramFiltre + "sort=" + sort + "&order=" + order + "&limit=" + limit,
+            dataType: 'json',
+            complete: function () {
+                $('#table-liste-{{ entity }} tbody').LoadingOverlay("hide", true);
+            },
+            success: function (json) {
+                $('#table-liste-{{ entity }} tbody').html(json.content);
+                $('.pagination').html(json.pagination);
+            },
+            error: function (jqXHR) {
+                my_alert(jqXHR.responseText, 'danger', '#message-alert');
+            }
+        });
+    }
+
+    $('th[data-sort]').click(function () {
+        var $this = $(this);
+        var clas = $this.hasClass('down') ? 'up' : 'down';
+        order = $this.hasClass('down') ? 'ASC' : 'DESC';
+        sort = $this.data('sort');
+
+        $('#table-liste-{{ entity }} tbody').LoadingOverlay("show", {image: "", fontawesome: "icon-spinner3 spinner"});
+        let paramFiltre = form_filtre_serialize + (form_filtre_serialize != "" ? '&' : '');
+        $.ajax({
+            type: "GET",
+            data: paramFiltre + "sort=" + sort + "&order=" + order + "&limit=" + limit,
+            dataType: 'json',
+            complete: function () {
+                $('#table-liste-{{ entity }} tbody').LoadingOverlay("hide", true);
+            },
+            success: function (json) {
+                $('#table-liste-{{ entity }} tbody').html(json.content);
+                $('.pagination').html(json.pagination);
+                $this.closest('tr').find('th').removeClass('up').removeClass('down');
+                $this.addClass(clas);
+            },
+            error: function (jqXHR) {
+                my_alert(jqXHR.responseText, 'danger', '#message-alert');
+            }
+        });
+    });
+
+    {% endif %}
+
+    {% if exportExcel is defined %}
+    $('#btn-export-xsl').click(function () {
+        $('#table-liste-{{ entity }} tbody').LoadingOverlay("show", {image: "", fontawesome: "icon-spinner3 spinner"});
+        let paramFiltre = form_filtre_serialize + (form_filtre_serialize != "" ? '&' : '');
+        $.ajax({
+            type: "GET",
+            data: paramFiltre + "sort=" + sort + "&order=" + order + "&limit=" + limit + "&export-xsl=1",
+            dataType: 'json',
+            complete: function () {
+                $('#table-liste-{{ entity }} tbody').LoadingOverlay("hide", true);
+            },
+            success: function (json) {
+                var dataXLS = json.data;
+                $("#dvjson").excelexportjs({
+                    containerid: "dvjson"
+                    , datatype: 'json'
+                    , dataset: dataXLS
+                    , columns: getColumns(dataXLS)
+                });
+            },
+            error: function (jqXHR) {
+                my_alert(jqXHR.responseText, 'danger', '#message-alert');
+            }
+        });
+    });
+    {% endif %}
+
+    {% if searching is defined %}
+    $('form[name="filtre"]').submit(function (e) {
+        e.preventDefault();
+
+        $('#table-liste-{{ entity }} tbody').LoadingOverlay("show", {image: "", fontawesome: "icon-spinner3 spinner"});
+        form_filtre_serialize = $(this).serialize();
+        let paramFiltre = form_filtre_serialize + (form_filtre_serialize != "" ? '&' : '');
+        $.ajax({
+            type: "GET",
+            data: paramFiltre + "sort=" + sort + "&order=" + order + "&limit=" + limit,
+            dataType: 'json',
+            complete: function () {
+                $('#table-liste-{{ entity }} tbody').LoadingOverlay("hide", true);
+            },
+            success: function (json) {
+                $('#table-liste-{{ entity }} tbody').html(json.content);
+                $('.pagination').html(json.pagination);
+                $('span#count-item-{{ entity }}').html(json.countItem);
+            },
+            error: function (jqXHR) {
+                my_alert(jqXHR.responseText, 'danger', '#message-alert');
+            }
+        });
+
+    });
+    {% endif %}
+
+    $('#modal-add-{{ entity }} form').submit(function (e) {
+        e.preventDefault();
+
+        if (typeof validation_{{ entity }} != 'undefined' && $.isFunction(validation_{{ entity }}))
+            if(!validation_{{ entity }}('add'))
+                return ;
+
+        {% if CKEDITOR is defined %}
+        for (instance in CKEDITOR.instances)
+            CKEDITOR.instances[instance].updateElement();
+        {% endif %}
+
+        let submit = true;
+        $('#modal-add-{{ entity }} form textarea[data-required]').each(function () {
+            if ($(this).val() == "") {
+                viewAlert('veuillez remplir le champ ' + $(this).prev('label').html().replace('<span class="symbol required"></span>', ''), 'danger');
+                submit = false;
+            }
+        });
+
+        if (!submit)
+            return;
+
+        $('#modal-add-{{ entity }} .modal-body').LoadingOverlay("show", {
+            image: "",
+            fontawesome: "icon-spinner3 spinner"
+        });
+
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'),
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            dataType: 'html',
+            complete: function () {
+                $('#modal-add-{{ entity }} .modal-body').LoadingOverlay("hide", true);
+            },
+            success: function (content) {
+                {% if bootstrapTable is defined %}
+                $('#script').html(content);
+                {% else %}
+                $('#table-liste-{{ entity }} tbody').prepend(content);
+                {% endif %}
+                $('span#count-item-{{ entity }}').html(parseInt($('span#count-item-{{ entity }}').html()) + 1);
+                $('#modal-add-{{ entity }}').modal('hide');
+
+                if (typeof resetForm_{{ entity }} != 'undefined' && $.isFunction(resetForm_{{ entity }}))
+                    resetForm_{{ entity }}($('#modal-add-{{ entity }} form'));
+                else
+                    resetForm($('#modal-add-{{ entity }} form'));
+
+                $('#zero-item-{{ entity }}').remove();
+            },
+            error: function (jqXHR) {
+                my_alert(jqXHR.responseText, 'danger', '#modal-add-{{ entity }} #modal-message-alert');
+            }
+        });
+
+    });
+
+    $(document).on('submit', '#modal-edit-{{ entity }} form', function (e) {
+        e.preventDefault();
+
+        if (typeof validation_{{ entity }} != 'undefined' && $.isFunction(validation_{{ entity }}))
+            if(!validation_{{ entity }}('edit'))
+                return ;
+
+        {% if CKEDITOR is defined %}
+        for (instance in CKEDITOR.instances)
+            CKEDITOR.instances[instance].updateElement();
+        {% endif %}
+
+        let submit = true;
+        $('#modal-edit-{{ entity }} form textarea[data-required]').each(function () {
+            if ($(this).val() == "") {
+                viewAlert('veuillez remplir le champ ' + $(this).prev('label').html().replace('<span class="symbol required"></span>', ''), 'danger');
+                submit = false;
+            }
+        });
+
+        if (!submit)
+            return;
+
+        $('#modal-edit-{{ entity }} .modal-body').LoadingOverlay("show", {
+            image: "",
+            fontawesome: "icon-spinner3 spinner"
+        });
+
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'),
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            dataType: 'html',
+            complete: function () {
+                $('#modal-edit-{{ entity }} .modal-body').LoadingOverlay("hide", true);
+            },
+            success: function (content) {
+                {% if bootstrapTable is defined %}
+                $('#script').html(content);
+                {% else %}
+                $('#table-liste-{{ entity }} tbody' + " tr#" + $('input#id').val()).replaceWith(content);
+                {% endif %}
+
+                $('#modal-edit-{{ entity }}').modal('hide');
+            },
+            error: function (jqXHR) {
+                my_alert(jqXHR.responseText, 'danger', '#modal-edit-{{ entity }} #modal-message-alert');
+            }
+        });
+
+    });
+
+    {% if resetForm is not defined %}
+    function resetForm(form) {
+        form.get(0).reset();
+        form.find('.styled').uniform();
+        form.find('.select-search').select2();
+        form.find('.select-xs').select2({containerCssClass: 'select-xs'});
+        form.find('.select').select2({minimumResultsForSearch: Infinity});
+
+        {% if CKEDITOR is defined %}
+        for (instance in CKEDITOR.instances)
+            CKEDITOR.instances[instance].updateElement();
+        {% endif %}
+    }
+
+    $(document).on('keydown','form input',function (e) {
+        if (e.keyCode == 13) {
+            var inputs = $(this).parents("form").eq(0).find(":input");
+            if (inputs[inputs.index(this) + 1] != null) {
+                inputs[inputs.index(this) + 1].focus();
+            }
+            e.preventDefault();
+            return false;
+        }
+    });
+    {% endif %}
+
+    {% if bootstrapTable is defined %}
+    if($('#script').length == 0)
+        $('body').append('<div id="script"></div>');
+    {% endif %}
+
+    $(document).on('click', '.btn-delete-{{ entity }}', function () {
+        let url = $(this).data('action');
+        {% if bootstrapTable is defined %}
+        let id = $(this).data('id');
+        {% else %}
+        let $tr = $(this).closest('tr');
+        {% endif %}
+        let $td = $(this).closest('td');
+        let fntAction = function () {
+            $td.html('<i class="icon-spinner2 spinner"></i>');
+            $.ajax({
+                url: url,
+                success: function () {
+                    {% if bootstrapTable is defined %}
+                    $('#table-liste-{{ entity }}').bootstrapTable('remove', {
+                        field: 'id',
+                        values: id.toString()
+                    });
+                    {% else %}
+                    $tr.remove();
+                    if ($('#table-liste-{{ entity }} tbody').find('tr').length == 0)
+                        $('#table-liste-{{ entity }} tbody').append(`<tr id="zero-item-{{ entity }}">
+                                        <td class="text-center" colspan="${$('#table-liste-{{ entity }} th').length}">${language.zeroItem}</td>
+                                    </tr>`);
+                    {% endif %}
+
+                    $('span#count-item-{{ entity }}').html(parseInt($('span#count-item-{{ entity }}').html()) - 1);
+                },
+                error: function (jqXHR) {
+                    my_alert(jqXHR.responseText, 'danger', '#message-alert');
+                }
+            });
+        };
+        demandConfirm(language.confirmSupp.title, language.confirmSupp.msg, language.confirmSupp.btn, fntAction);
+    });
+
+    $(document).on('click', '.btn-edit-{{ entity }}', function () {
+        $('#modal-edit-{{ entity }} .modal-body').LoadingOverlay("show", {
+            image: "",
+            fontawesome: "icon-spinner3 spinner"
+        });
+        {% if bootstrapTable is defined %}
+        let index=$(this).closest('tr').data('index');
+        {% endif %}
+        $.ajax({
+            type: "POST",
+            url: $(this).data('action'),
+            dataType: 'html',
+            complete: function () {
+                $('#modal-edit-{{ entity }} .modal-body').LoadingOverlay("hide", true);
+            },
+            success: function (content) {
+                $('#modal-edit-{{ entity }} .modal-body').html(content);
+                {% if bootstrapTable is defined %}
+                $('#modal-edit-{{ entity }} .modal-body input[name="index"]').val(index);
+                {% endif %}
+            },
+            error: function (jqXHR) {
+                my_alert(jqXHR.responseText, 'danger', '#message-alert');
+            }
+        });
+    });
+</script>

@@ -1,0 +1,182 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Class Names{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <select name="" id="" class="select-search">
+            <option value=""></option>
+            {% for className in classNames %}
+                <option value="{{ className }}">{{ className }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <form method="post" target="_blank">
+        <div class="row">
+            <ul>
+                {#<li><b>Name: </b><span id="name"></span></li>
+                <li><b>NameSpace: </b><span id="namespace"></span></li>
+                <li><b>Translatable: </b><span id="translatable"></span></li>
+                <li><b>UploadableField: </b><span id="uploadableField"></span></li>
+                <li><b>Use In FormType: </b><span id="uses"></span></li>#}
+                <li><input type='checkbox' name='creat-controller' checked><b> Creat Controller</b></li>
+                <li><input type='checkbox' name='create-form-type' checked><b> Create Form Type</b></li>
+                <li><input type='checkbox' name='create-repository' checked><b> Create Repository</b></li>
+                <li><input type='checkbox' name='create-form-search-type' checked><b> Create Form Search Type</b></li>
+                <li><input type='checkbox' name='create-entity-search' checked><b> Create Entity Search</b></li>
+                <li><input type='checkbox' name='create-item-twig' checked><b> Create Item Twig</b></li>
+                <li><input type='checkbox' name='create-liste-twig' checked><b> Create Liste Twig</b></li>
+                <li><input type='checkbox' name='create-form-twig' checked><b> Create Form Twig</b></li>
+                <li><input type='checkbox' name='create-index-twig' checked><b> Create Index Twig</b></li>
+
+                <li><input type='checkbox' name='export-excel'><b> Export Excel</b></li>
+                <li><input type='checkbox' name='single-item'><b> Single Item</b></li>
+                <li><input type='checkbox' name='copy-old'><b> Copier Si Existe</b></li>
+                <li><input type='checkbox' name='copy-test'><b> TEST</b></li>
+                <li><input type='checkbox' name='knp_paginator' checked><b> knpPaginator</b></li>
+                <li><b> Width Modal</b><input type="text" name="width-modal" style="text-align: center"></li>
+            </ul>
+            <input type="hidden" name="className" id="className">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">x</th>
+                    <th scope="col">fieldName</th>
+                    <th scope="col">label</th>
+                    <th scope="col">list</th>
+                    <th scope="col">search</th>
+                    <th scope="col">statiqueData</th>
+                    <th scope="col">type</th>
+                    {#<th scope="col">translatable</th>#}
+                    {#<th scope="col">scale</th>#}
+                    {#<th scope="col">precision</th>#}
+                    <th scope="col">relation</th>
+                    <th scope="col">nullable</th>
+                    {#<th scope="col">namespace</th>#}
+                    {#<th scope="col">class</th>#}
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h6 class="panel-title">Col-Md<a class="heading-elements-toggle"><i class="icon-more"></i></a></h6>
+                </div>
+
+                <div class="panel-body">
+                    <div class="row" id="col-md">
+                    </div>
+                </div>
+            </div>
+            <button id="col_md_search" type="button">Col-Md-Search</button>
+            <div class="panel panel-flat">
+                <div class="panel-heading">
+                    <h6 class="panel-title">Col-Md-Search<a class="heading-elements-toggle"><i
+                                    class="icon-more"></i></a></h6>
+                </div>
+
+                <div class="panel-body">
+                    <div class="row" id="col-md-search">
+                    </div>
+                </div>
+            </div>
+
+            <button>Générer</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block jquery %}
+    <script>
+        $('select').change(function () {
+            $this = $(this);
+            $this.prop('disabled', true);
+            $('table.table tbody').html("");
+            $('input#className').val($(this).val());
+            $('span#namespace').html('');
+            $('span#name').html('');
+            $('span#translatable').html('');
+            $('span#uploadableField').html('');
+            $('span#uses').html('');
+            $('table.table tbody').LoadingOverlay("show", {image: "", fontawesome: "icon-spinner3 spinner"});
+            $.ajax({
+                type: "get",
+                data: {className: $(this).val()},
+                dataType: 'json',
+                complete: function () {
+                    $('table.table tbody').LoadingOverlay("hide", true);
+                    $this.prop('disabled', false);
+                },
+                success: function (json) {
+                    $('div#col-md').html('');
+                    $('span#translatable').html(json.translatable ? 'true' : 'false');
+                    $('span#uploadableField').html(json.uploadableField ? 'true' : 'false');
+                    $('span#namespace').html(json.namespace);
+                    $('span#name').html(json.name);
+                    let ul = "<ul>";
+                    jQuery.each(json.uses, function (i, val) {
+                        ul += "<li>" + val + "</li>";
+                    });
+                    ul += "</ul>";
+                    $('span#uses').html(ul);
+
+                    jQuery.each(json.fieldMappings, function (i, val) {
+                        let tr = "<tr>";
+                        jQuery.each(val, function (_i, _val) {
+                            tr += "<td>" + _val + "</td>";
+                        });
+                        tr += "</tr>";
+                        $('table.table tbody').append(tr);
+                        $('div#col-md').append(`<div class="col-md-1"><label>${i}</label><div class="form-group"><input name="col-md[${i}]" type="number" data-field="${i}" value="1" min="1" max="12" class="form-control ${i}"></div></div>`);
+                    });
+                },
+                error: function (jqXHR) {
+                    my_alert(jqXHR.responseText, 'danger', '#modal-message-alert');
+                }
+            });
+        });
+
+        $('#col_md_search').click(function () {
+            $('div#col-md-search').html('');
+            $('div#col-md input').each(function () {
+                let field = $(this).data('field');
+                let clas = $(this).parent().parent().attr('class');
+                let val = $(this).val();
+                if ($(`#search-${$(this).data('field')}`).is(':checked'))
+                    if ($(`#searchInter-${field}`).is(':checked')) {
+                        $('div#col-md-search').append(`<div class="col-md-${val} ${clas}"><label>${field} de</label><div class="form-group"><input name="col-md-search[${field}]" type="number" value="${val}" min="1" max="12" class="form-control ${field}"></div></div>`);
+                        $('div#col-md-search').append(`<div class="col-md-${val} ${clas}"><label>${field} au</label><div class="form-group"><input type="number" value="${val}" min="1" max="12" class="form-control ${field}"></div></div>`);
+                    } else
+                        $('div#col-md-search').append(`<div class="col-md-${val} ${clas}"><label>${field}</label><div class="form-group"><input name="col-md-search[${field}]" type="number" value="${val}" min="1" max="12" class="form-control ${field}"></div></div>`);
+            })
+        });
+
+        $('table.table tbody').on('click', 'input.X', function () {
+            let field = $(this).data('field');
+            if ($(this).is(':checked'))
+                $(`input[type="number"].${field}`).parent().parent().removeClass('hidden');
+            else
+                $(`input[type="number"].${field}`).parent().parent().addClass('hidden');
+        });
+
+        $('div#col-md,div#col-md-search').on('change', 'input[type="number"]', function () {
+            $(this).parent().parent().attr('class', 'col-md-' + $(this).val());
+        });
+
+
+        $("div#col-md,div#col-md-search").on('keypress', 'input[type="number"]', function (event) {
+            let name = $(this).attr('name');
+            let div = $(this).parent().parent();
+
+            if (event.which == 114)//right
+                div.insertAfter(div.next());
+
+            if (event.which == 108)//left
+                div.insertBefore(div.prev());
+
+            $('input[name="' + name + '"]').focus();
+        });
+    </script>
+{% endblock %}

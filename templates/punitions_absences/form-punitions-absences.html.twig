@@ -1,0 +1,85 @@
+<h3>{{ ("Formulaire " ~ type|title)|trans }}</h3>
+<div class="row" hidden>
+    {{ form_input(null,null,form.type) }}
+    {{ form_input(null,null,form.annee_scolaire) }}
+    {{ form_input(null,null,form.classe) }}
+    {{ form_input(null,null,form.dateDebut) }}
+</div>
+
+{% if is_granted('ROLE_ADMIN') %}
+    <div class="row" hidden>
+        {{ form_input(null,null,form.eleve) }}
+    </div>
+{% endif %}
+
+{% if not is_granted('ROLE_ADMIN') %}
+    <div class="row" hidden>
+        {#{{ form_input("col-md-12","Eleve"|trans,form.eleve) }}#}
+        <select name="eleves[]" multiple>
+        {% for eleve in form.eleve.vars.choices %}
+            <option value="{{ eleve.data.id }}">{{ eleve.data.nomPrenom }}</option>
+        {% endfor %}
+        </select>
+    </div>
+    {#<script>
+        {% set classes = form.vars.form.children.classe.vars.choices %}
+        $(document).on('change', 'div#form-{{ type|lower }} .classe', function () {
+            let eleve = $('div#form-{{ type|lower }} .eleve');
+            eleve.empty();
+            let classe = $(this).val();
+            {% for classe in classes %}
+            if (classe == {{ classe.data.id }}) {
+                {% for eleve in classe.data.eleves %}
+                eleve.append('<option value="{{ eleve.id }}">{{ eleve }}</option>');
+                {% endfor %}
+                eleve.select2();
+            }
+            {% endfor %}
+        });
+        $('div#form-{{ type|lower }} .classe').change();
+    </script>#}
+{% endif %}
+
+<div class="row">
+    {% if type in ['ELIMINE'] %}
+        {{ form_input("col-md-3","Date Fin"|trans,form.dateFin) }}
+    {% endif %}
+
+    {% if type in ['EXCLUSION','EXPULSION'] %}
+        {{ form_input("col-md-3","Matiére"|trans,form.matiere) }}
+        {{ form_input("col-md-3","Enseignant"|trans,form.enseignant) }}
+        {{ include('enseignant/js-filtre-enseignant.html.twig',{form:form,type:type}) }}
+    {% endif %}
+
+    {% if type not in ['AVERTISSEMENT','ELIMINE'] %}
+        {{ form_input("col-md-2","Heure"|trans,form.heure) }}
+    {% endif %}
+
+    {% if type in ['ABSENCE','EXPULSION'] %}
+        {{ form_input("col-md-2","Nbr Jour"|trans,form.nbrJour) }}
+    {% endif %}
+
+    {% if type in ['ABSENCE'] %}
+        {{ form_input("col-md-2","Nbr Heure"|trans,form.nbrHeure) }}
+    {% endif %}
+
+
+    {% if type in ['ABSENCE','EXCLUSION','RETARD'] %}
+        {% if is_granted('ROLE_ADMIN') %}<div hidden>{% endif %}
+        {{ form_input("col-md-3","Mode Règlement"|trans,form.modeReglement) }}
+        <script>$('div#form-{{ type|lower }} .reglement').select2();</script>
+        {% if is_granted('ROLE_ADMIN') %}</div>{% endif %}
+    {% endif %}
+</div>
+
+{% if type in ['AVERTISSEMENT','CONSEIL','ELIMINE'] %}
+    <div class="row">
+        {{ form_input("col-md-12","Objet"|trans,form.objet) }}
+    </div>
+{% endif %}
+
+{% if type in ['EXCLUSION','EXPULSION','AVERTISSEMENT'] %}
+    <div class="row">
+        {{ form_input("col-md-12","Raison"|trans,form.raison) }}
+    </div>
+{% endif %}

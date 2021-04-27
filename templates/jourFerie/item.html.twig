@@ -1,0 +1,16 @@
+{% if list is not defined %}<script>{% endif %}
+    $("#table-liste-jourferie").bootstrapTable("{{ index is defined ? "updateRow" : "insertRow" }}", {
+        index: {{ index is defined ? index : 0 }},
+        row: {
+        id: '{{ jourferie.id }}',
+        debut: '{{ jourferie.debut|date("d/m/Y") }}',
+        fin: '{{ jourferie.fin|date("d/m/Y") }}',
+        libelle: '{{ jourferie.libelle }}',
+        action: "\n" +
+            '<a href="javascript:void(0);" data-id="{{ jourferie.id }}" data-action="{{ path("jourferie_delete", {"id": jourferie.id}) }}"'+
+               'class="btn-delete-jourferie"><i class="icon-trash"></i></a>'+
+            '<a href="#modal-edit-jourferie" data-toggle="modal" data-action="{{ path("jourferie_edit", {"id": jourferie.id}) }}"'+
+               'class="btn-edit-jourferie"><i class="icon-pencil"></i></a>'
+        }
+    })
+{% if list is not defined %}</script>{% endif %}

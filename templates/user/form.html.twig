@@ -1,0 +1,32 @@
+{% set mode = form.vars.value is not null ? "edit" : "add" %}
+{{ form_start(form,{attr : { action : action } } ) }}
+{% if mode == "edit" %}
+    <input type="hidden" id="id" value="{{ form.vars.value.id }}">
+{% endif %}
+<div class="row">
+    {{ form_input("col-md-12","Nom Prénom"|trans,form.nomPrenom) }}
+    {{ form_input("col-md-12","Username"|trans,form.username) }}
+    {{ form_input("col-md-12","Email"|trans,form.email) }}
+    {% if mode == "add" %}
+        {{ form_input("col-md-12","Mot de passe"|trans,form.password) }}
+    {% endif %}
+    {{ form_checkbox("col-md-12","Activé"|trans,form.enabled) }}
+{#    {{ form_input("col-md-12","Roles"|trans,form.roles) }}#}
+</div>
+
+<hr>
+
+<div class="text-right">
+    <button type="submit" class="btn btn-primary"><i
+                class="fa fa-{{ (mode == "edit" ? "edit" : "save") }}  position-left"></i> {{ (mode == "edit" ? "Modifier" : "Enregistrer")|trans }}
+    </button>
+</div>
+{{ form_end(form) }}
+{% if mode == "edit" %}
+    <script>
+        $(body_modal_edit + " #user_roles .form-check-input").uniform({
+            radioClass: 'choice'
+        });
+        $(body_modal_edit + " .styled").uniform({radioClass: 'choice'});
+    </script>
+{% endif %}

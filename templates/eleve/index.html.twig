@@ -1,0 +1,143 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ "Eleve"|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset("assets/css/style-crud.css") }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block body %}
+    <style>
+        div.icon-spinner3 {
+            font-size: 100%
+        }
+
+        .m-t-25 {
+            margin-top: 25px;
+        }
+
+    </style>
+      <div class="page-header page-header-default">
+            <div class="breadcrumb-line">
+                    <ul class="breadcrumb">
+                                        <li><a href="index.html"><i class="icon-home2 position-left"></i> {{ "Referentiel"|trans }}</a></li>
+                                        <li class="active">{{ "Eleve"|trans }}</li>
+                    </ul>
+                    {% include "layout.html.twig" %} 
+            </div>
+    </div>
+    <div id="message-alert"></div>
+    <div id="modal-add-eleve" class="modal fade" tabindex="-1">
+        <div id="modal-message-alert"></div>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Ajout d'un nouvel élément"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+                    {{ include("eleve/form.html.twig",{action:path("eleve_new")}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-edit-eleve" class="modal fade" tabindex="-1">
+        <div id="modal-message-alert"></div>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title">{{ "Modifier élément"|trans }}</h6>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body" style="overflow:hidden;">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h2 class="panel-title">{{ "Eleves"|trans }} (<span
+                        id="count-item-eleve">{{ eleves.getTotalItemCount }}</span> {{ "éléments"|trans }})<a
+                        class="heading-elements-toggle"><i class="icon-more"></i></a></h2>
+            <div class="heading-elements">
+                <a href="#modal-add-eleve" data-toggle="modal" class="btn border-primary btn-xs text-slate-800 btn-flat"><i
+                            class="icon-plus-circle2 position-left"></i> {{ "Nouvel  Élément"|trans }}</a>
+                <a data-toggle="collapse" data-target="#form-filtre"
+                   class="btn border-primary btn-xs text-slate-800 btn-flat"><i
+                            class="icon-search4 position-left"></i> {{ "Recherche"|trans }}</a>
+            </div>
+        </div>
+
+        <div class="panel panel-flat border-top-success collapse" id="form-filtre">
+            <div class="panel-heading">
+                <h6 class="panel-title">{{ "Formulaire de recherche"|trans }}</h6>
+            </div>
+
+            <div class="panel-body">
+                {{ form_start(form_search) }}
+                <div class="row">
+                    {{ form_input("col-md-3","Identifiant"|trans,form_search.identifiant) }}
+                    {{ form_input("col-md-9","Nom & Prénom"|trans,form_search.nomprenom) }}
+                    {{ form_input("col-md-4","Etablissement Année Dernière"|trans,form_search.etablissementAnneeDerniere) }}
+                    {{ form_input("col-md-4","Classe Année Dernière"|trans,form_search.classeAnneeDerniere) }}
+                    {{ form_input("col-md-4","Classe Année Actuelle"|trans,form_search.classeAnneeActuelle) }}
+                </div>
+                <hr>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary"><i
+                                class="icon-search4  position-left"></i> {{ "Recherche"|trans }} </button>
+                    <button type="submit" class="btn btn-default"
+                            onclick="resetForm($(this).closest('form'));"><i
+                                class="icon-filter4  position-left"></i> {{ "Réinitialiser"|trans }}  </button>
+                </div>
+                {{ form_end(form_search) }}
+            </div>
+        </div>
+
+
+        <div class="panel-body table-responsive">
+            <div id="show-page" class="hidden" style="display: inline-flex;float: right;    margin-right: 10px;">
+                <span style="    margin-right: 10px;    margin-top: 7px;">{{ "Afficher"|trans }}</span>
+                <select name="limit" class="select">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="9999999999">{{ "Tous"|trans }}</option>
+                </select>
+                <span style="margin-right: 20px;margin-left: 10px;margin-top: 7px;">{{ "éléments"|trans }}</span>
+            </div>
+
+            <table class="table table-striped" id="table-liste-eleve" >
+                <thead>
+                <tr>
+                    <th data-sort="identifiant">{{ "Identifiant"|trans }}</th>
+                    <th data-sort="nomprenom">{{ "Nom & Prénom"|trans }}</th>
+                    <th data-sort="dateNaissance">{{ "Date Naissance"|trans }}</th>
+                    <th>{{ "Classe Année Actuelle"|trans }}</th>
+                    <th>{{ "Sexe"|trans }}</th>
+                    <th data-sort="numOrdre">{{ "N° Ordre"|trans }}</th>
+
+                    <th class="action">{{ "Actions"|trans }}</th>
+                </tr>
+                </thead>
+                <tbody id="table_div">
+                {{ include("eleve/liste.html.twig",{"eleves":eleves}) }}
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination">
+            {{ include("knp_paginator/pagination_render.html.twig",{"items":eleves}) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ include("jquery_crud.html.twig",{"entity":"eleve","pagination":true,"searching":true}) }}
+{% endblock %}

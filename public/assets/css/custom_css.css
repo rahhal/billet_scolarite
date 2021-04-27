@@ -1,0 +1,24 @@
+.img_piecejointe{
+    width:100px;border-radius:5px;
+}
+.action_col{
+    white-space: nowrap;
+    width: 1%;
+}
+
+.custom_input_style {
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: #03a8f45e;
+    width: 80px;
+}
+.custom_input_style:focus {
+}
+.custom_input_style:disabled {
+    background: none;
+    border-color: #F8F8F8;
+}
+
+.btnhide{
+    display: none;
+}

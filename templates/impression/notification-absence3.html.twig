@@ -1,0 +1,75 @@
+{% extends "impression/print.html.twig" %}
+{% set info = InfoGeneral() %}
+
+{% block title %}
+    <title>إعلام ثالث بالغياب</title>
+{% endblock %}
+
+{% block header %}
+    {% include "impression/header.html.twig" %}
+{% endblock %}
+
+{% block content %}
+    <h1 style="text-align: center;font-size: 32px"><b>إعلام ثالث بالغياب</b></h1>
+    <br>
+    <table class="table-details">
+        <tbody>
+        <tr>
+            <th>من مدير :</th>
+            <td>{{ info.etablissement ~ ' ' ~ info.ville }}</td>
+        </tr>
+        <tr>
+            <th>إلى السيد :</th>
+            <td>{{ punition.eleve.nomPere }}</td>
+        </tr>
+        <tr>
+            <th>ولي التلميذ(ة) :</th>
+            <td>{{ punition.eleve.nomPrenom }}</td>
+        </tr>
+        <tr>
+            <th>المرسم(ة) بـ :</th>
+            <td>{{ punition.eleve.classe }}</td>
+        </tr>
+        <tr>
+            <th>العنوان</th>
+            <td>{{ punition.eleve.adresseDomicile }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <table class="border">
+        <tbody>
+        <tr>
+            <td style="padding-top: 15px">وبعد , كنا اشعرناكم في : </td>
+        </tr>
+        <tr>
+            <td>إعلام اول بتاريخ : {{ punition.dateNotification1 is not null ? punition.dateNotification1|date('Y/m/d') : '---' }}</td>
+        </tr>
+        <tr>
+            <td>إعلام ثان بتاريخ : {{ punition.dateNotification2 is not null ? punition.dateNotification2|date('Y/m/d') : '---' }}</td>
+        </tr>
+        <tr>
+            <td>بغياب (ابنكم / ابنتكم) عن {{ info.etablissement ~ ' ' ~ info.ville }} وطلبنا منكم مد الإدارة بالمبررات الشرعية </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 15px">لهذا الغياب و لاحظنا إلى اليوم لم تقوموا بذلك و لهذا يؤسفني أن أعلمكم أنه سيقع الشطب على اسمه ان لم تتصل الإدارة بما يبرر هذا الغياب في ظرف اسبوع من تاريخ الإعلام. </td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <table>
+        <tbody>
+        <tr>
+            <td width="60%"></td>
+            <td width="40%" style="padding: 15px"><b>القيم العام</b></td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br><br><br><br>
+    <table>
+        <tbody>
+        <tr><td>رقم المراسلة : .....................................................</td></tr>
+        <tr><td>تاريخ إصدارها : ...................................................</td></tr>
+        </tbody>
+    </table>
+{% endblock %}

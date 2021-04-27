@@ -1,0 +1,7 @@
+{% for etablissement in etablissements %}
+    {{ include("etablissement/item.html.twig",{"etablissement":etablissement}) }}
+{% else %}
+    <tr id="zero-item-etablissement">
+        <td class="text-center" colspan="11">{{ "Aucun enregistrement trouvé"|trans }}</td>
+    </tr>
+{% endfor %}

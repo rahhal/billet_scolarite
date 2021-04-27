@@ -1,0 +1,16 @@
+{% if list is not defined %}<script>{% endif %}
+    $("#table-liste-section").bootstrapTable("{{ index is defined ? "updateRow" : "insertRow" }}", {
+        index: {{ index is defined ? index : 0 }},
+        row: {
+        code: '{{ section.code }}',
+        libelleAR: '{{ section.libelleAR }}',
+        libelleFR: '{{ section.libelleFR }}',
+        action: "\n" +
+            '<a href="javascript:void(0);" data-id="{{ section.id }}" data-action="{{ path("section_delete", {"id": section.id}) }}"'+
+               'class="btn-delete-section"><i class="icon-trash"></i></a>'+
+            '<a href="#modal-edit-section" data-toggle="modal" data-action="{{ path("section_edit", {"id": section.id}) }}"'+
+               'class="btn-edit-section"><i class="icon-pencil"></i></a>'
+        }
+    })
+{% if list is not defined %}</script>{% endif %}
+

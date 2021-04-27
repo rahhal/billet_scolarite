@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" {% if app.request.locale == 'ar' %}dir="rtl"{% endif %}>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ "Scolarite"|trans }}{% endblock %}</title>
+    <!-- Global stylesheets -->
+
+    {% block stylesheets %}
+        <!-- Global stylesheets -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet"
+              type="text/css">
+        <link href="{{ asset('assets/css/icons/icomoon/styles.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('assets/css/icons/fontawesome/styles.min.css') }}" rel="stylesheet" type="text/css">
+
+        {% set folder = app.request.locale == 'ar' ? '/RTL' : '' %}
+        <link href="{{ asset('assets/css' ~ folder ~ '/bootstrap.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('assets/css' ~ folder ~ '/core.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('assets/css' ~ folder ~ '/components.css') }}" rel="stylesheet" type="text/css">
+
+        <link href="{{ asset('assets/css/colors.css') }}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{{ asset('assets/css/jquery-confirm.min.css') }}">
+        <link href="{{ asset('assets/css/custom_css.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet" type="text/css">
+<!-- My Style -->
+    <link href="{{ asset('assets/css/style1.css') }}" rel="stylesheet">
+
+        <script type="text/javascript" src="{{ asset('assets/js/core/libraries/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/plugins/forms/selects/select2.min.js') }}"></script>
+        <style>
+            div.container {
+                background-color: #10649e;
+                position:absolute;
+                left: 40%;
+                top: 40%;
+                width: 350px;
+                height: 300px;
+                margin-left: -100px; /* Cette valeur doit être la moitié négative de la valeur du width */
+                margin-top: -100px; /* Cette valeur doit être la moitié négative de la valeur du height */
+            }
+            .symbol.required:before {
+                content: '*';
+                color: red;
+            }
+
+            a i.icon-trash {
+                color: red;
+            }
+
+            div.icon-spinner3 {
+                font-size: 100px;
+            }
+        </style>
+    {% endblock %}
+
+</head>
+
+<body style="color: black;" {% block body_class %} {% endblock %}>
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+   
+{% endblock %}
+
+
+<!-- /page container-->
+<!-- Core JS files -->
+{% block javascripts %}
+    <!-- Core JS files -->
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/loaders/pace.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/core/libraries/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/loaders/blockui.min.js') }}"></script>
+    <!-- /core JS files -->
+    <!-- Theme JS files -->
+    <script type="text/javascript" src="{{ asset("assets/js/pages/datatables_extension_buttons_html5.js") }}"></script>
+
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/forms/styling/uniform.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/forms/styling/switchery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/forms/styling/switch.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/core/libraries/jquery_ui/interactions.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/notifications/bootbox.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/notifications/sweet_alert.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/plugins/media/fancybox.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/core/app.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/pages/datatables_sorting.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/pages/form_select2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/pages/gallery.js') }}"></script>
+    <script type="text/javascript" src="{{ asset("assets/js/jquery.number.js") }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/loadingoverlay.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/toastr.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset("assets/js/bootstrap-table.min.js") }}"></script>
+    <script type="text/javascript"
+            src="{{ asset("assets/js/bootstrap-table-" ~ (app.request.locale == 'ar' ? 'ar-SA' : 'fr-FR') ~ ".min.js") }}"></script>
+
+    <script src="{{ asset('assets/js/jquery-confirm.min.js') }}"></script>
+    {#    <script type="text/javascript" src="{{asset('assets/js/pages/form_checkboxes_radios.js')}}"></script>#}
+
+    <!-- /theme JS files -->
+
+{% endblock %}
+<!-- some script -->
+{% block jquery %}{% endblock %}
+</body>
+</html>

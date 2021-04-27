@@ -1,0 +1,15 @@
+<tr id="{{ eleve.id }}">
+    <td>{{ eleve.identifiant }}</td>
+    <td>{{ eleve.nomprenom }}</td>
+    <td>{{ eleve.dateNaissance|date("d/m/Y") }}</td>
+    <td>{{ eleve.classeAnneeActuelle }}</td>
+    <td>{{ eleve.sexe }}</td>
+    <td>{{ eleve.numOrdre }}</td>
+
+    <td id="{{ eleve.id }}">
+            <a href="javascript:void(0);" data-id="{{ eleve.id }}" data-action="{{ path("eleve_delete", {"id": eleve.id}) }}"
+               class="btn-delete-eleve"><i class="icon-trash"></i></a>
+            <a href="#modal-edit-eleve" data-toggle="modal" data-action="{{ path("eleve_edit", {"id": eleve.id}) }}"
+               class="btn-edit-eleve"><i class="icon-pencil"></i></a>
+    </td>
+</tr>

@@ -1,0 +1,15 @@
+{% if list is not defined %}<script>{% endif %}
+    $("#table-liste-enseignant").bootstrapTable("{{ index is defined ? "updateRow" : "insertRow" }}", {
+        index: {{ index is defined ? index : 0 }},
+        row: {
+        code: '{{ enseignant.code }}',
+        nom: '{{ enseignant.nom }}',
+        matiere: '{{ enseignant.matiere }}',
+        action: "\n" +
+            '<a href="javascript:void(0);" data-id="{{ enseignant.id }}" data-action="{{ path("enseignant_delete", {"id": enseignant.id}) }}"'+
+               'class="btn-delete-enseignant"><i class="icon-trash"></i></a>'+
+            '<a href="#modal-edit-enseignant" data-toggle="modal" data-action="{{ path("enseignant_edit", {"id": enseignant.id}) }}"'+
+               'class="btn-edit-enseignant"><i class="icon-pencil"></i></a>'
+        }
+    })
+{% if list is not defined %}</script>{% endif %}

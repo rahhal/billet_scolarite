@@ -1,0 +1,243 @@
+Absence: غياب
+absence: غياب
+Actions: إجراءات
+Adresse: عنوان
+Administration: الادارة
+Afficher: عرض
+Ajout: إضافة
+'Ajout d''un nouvel élément': 'إضافة عنصر جديد'
+'Ajout dun nouvel élément': 'إضافة عنصر جديد'
+'Annee scolaire': 'السنة الدراسية'
+AnneeScolaire: 'السنة الدراسية'
+anneescolaire: 'السنة الدراسية'
+AnneeScolaires: 'السنة الدراسية'
+Annuler: إلغاء
+Année: السنة
+Attention: حذاري
+'Attestation de presence': 'شهادة حضور'
+'Attestation de présence': 'شهادة حضور'
+'Aucun enregistrement trouvé': 'لم يتم العثور على أي عنصر'
+'Autres documents': 'وثائق أخرى'
+Avertissement: إنذار
+avertissement: إنذار
+'Avertissement de radiation': 'إنذار بالشطب'
+'Avis de radiation': 'إعلام بالشطب'
+'billet': 'ب'
+'Billet d''entrée': 'بطاقة الدخول'
+'Billet dentrée': 'بطاقة الدخول'
+'Certificat médicale': 'شهادة طبية'
+'Champs obligatoires': 'معطيات إجبارية'
+Carte élève: بطاقة تلميذ
+'Carte des renseignements': 'بطاقة ارشادات'
+'Carte élève idividuelle': 'ب.ت. فردي'
+'Carte élève par classe': 'ب.ت. بالقسم'
+Certificat garantissant d'un accident: شهادة تكفل بحادث
+CIN: ر.ب.ت.و
+Classe: القسم
+'Classe Année Actuelle': 'القسم الحالي'
+'Classe Année Dernière': 'قسم العام الماضي'
+Classes: الأقسام
+'Clé de license': 'مفتاح التشغيل'
+'Clé de License non valide': 'مفتاح التشغيل غير صحيح'
+'Clé License': 'مفتاح التشغيل'
+Code: الرمز
+'Confirmation suppression': 'تأكيد الحذف'
+Confirmer: موافق
+Conseil: مجلس
+conseil: مجلس
+'Convocations': 'الاستدعاءات'
+Convocation parent: 'استدعاء ولي'
+Convocation élève: 'استدعاء تلميذ'
+Courant: الحالي
+Dashboard: 'لوحة القيادة'
+Date: التاريخ
+'Date debut': 'تاريخ البداية'
+'Date Début': 'تاريخ البداية'
+'Date Fin': 'تاريخ الانتهاء'
+'Date Naissance': 'تاريخ الولادة'
+'Date Règlement': 'تاريخ التسوية'
+'Demande convocation parent': 'طلب استدعاء ولي'
+Directeur: المدير
+'Données Eleve': 'بيانات التلميذ'
+'Données Statique': 'بيانات أساسية'
+'Désolé, seuls les fichiers PHP sont autorisés': 'عذرا ، يسمح فقط لملفات PHP'
+'Désolé, seuls les fichiers SQL sont autorisés': 'عذرا ، يسمح فقط لملفات SQL'
+'Désolé, une erreur s''est produite lors du l''importation de votre fichier.': 'عذرا ، حدث خطأ أثناء استيراد ملفك'
+Eleve: التلميذ
+Eleves: التلاميذ
+Elimine: إعفاء
+elimine: إعفاء
+Enregistrer: تسجيل
+Engagement: التزام
+Enseignant: الأستاذ
+Enseignants: الأساتذة
+'Entrer ici votre clé de license': 'أدخل هنا مفتاح التشغيل'
+Etablissement: مؤسسة
+'Etablissement Année Dernière': 'مؤسسة العام الماضي'
+Etablissements: المؤسسة
+Exclusion: اقصاء
+exclusion: اقصاء
+'Export base des données': 'حفظ المعطيات'
+Expulsion: رفت
+expulsion: رفت
+Fax: فاكس
+'Formulaire Absence': 'استمارة الغياب'
+'Formulaire Avertissement': 'استمارة الإنذار'
+'Formulaire Conseil': 'استمارة المجلس'
+'Formulaire de recherche': 'استمارة البحث'
+'Formulaire Elimine': 'استمارة الإعفاء'
+'Formulaire Exclusion': 'استمارة الاقصاء'
+'Formulaire Expulsion': 'استمارة الرفت'
+'Formulaire Retard': 'استمارة التأخير'
+Félicitation: تهانينا
+gouvernorat: الولاية
+Heure: الساعة
+Identifiant: 'المعرف الوحيد'
+'Importbase des données': 'إسترجاع معطيات'
+Impression: طباعة
+'Impression 2 éme annonce d''absence': 'طباعة إعلام ثان بالغياب'
+'Impression 3 éme annonce d''absence': 'طباعة إعلام ثالث بالغياب'
+'2 éme annonce d''absence': 'إعلام ثان بالغياب'
+'3 éme annonce d''absence': 'إعلام ثالث بالغياب'
+'Impression avertissement': 'طباعة الإنذار'
+'Impression Billet': 'طباعة بطاقة الدخول'
+'Impression Encours ...': 'الطباعة قيد التقدم ...'
+'Impression expulsion': 'طباعة إعلام برفت مؤقت'
+'Impression premiére annonce d''absence': 'طباعة إعلام أول بالغياب'
+'Premiére annonce d''absence': 'إعلام أول بالغياب'
+'Jour Ferie': 'يوم عطلة'
+JourFerie: 'يوم عطلة'
+JourFeries: 'أيام العطل'
+'Les données du fichier <b>%mysqlImportFilename%</b>ont été importées avec succès dans la base de données.': 'تم إسترجاع المعطيات بنجاح'
+Libellé: البيان
+'Libellé AR': 'تسمية AR'
+'Libellé FR': 'تسمية FR'
+'Lieu Naissance': 'مكان الولادة'
+'Liste de retards non règlées': 'قائمة التأخيرات التي لم يتم تسويتها'
+'Liste des absences non règlées': 'قائمة الغيابات التي لم يتم تسويتها'
+'Liste des exclusions non règlées': 'قائمة الطرد التي لم يتم تسويتها'
+'Liste des punitions et absences non traitées': 'قائمة الغيابات و الطرد '
+Main: القائمة
+Mandoubia: المندوبية
+Matiere: مواد
+Matieres: المواد
+Matière: مواد
+Matiére: المواد
+'Mettre à jour base des données': 'تحديث قاعدة البيانات'
+Ministère: الوزارة
+'Mode Règlement': 'طريقة التسوية'
+'Modifier élément': 'تغيير عنصر'
+'Modifier': 'تغيير'
+'Nbr Heure': 'عدد الساعات'
+'Nbr Jour': 'عدد الأيام'
+Niveau: المستوى
+'Niveau Etude': 'مستوى الدراسة'
+Niveaus: المستويات
+Nom: الإسم
+'Nom & Prénom': 'الإسم مع اسم العائلة'
+NON: 'لا'
+Notification: إعلام
+'Notification 1er d''absence': 'إ. أول بغياب'
+'Notification 2éme d''absence': 'إ. ثان بغياب'
+'Notification 3éme d''absence': 'إ. ثالث بغياب'
+'Notification de suppression': 'إنذار بالشطب'
+'Nouveau Retard': 'تأخير جديد'
+'Nouvel  Élément': 'عنصر جديد'
+'Nouvelle Absence': 'غياب جديد'
+'Nouvelle Exclusion': 'اقصاء جديد'
+'N° Ordre': ع/ر
+Objet: الموضوع
+'Opération terminée avec succès': 'تمت العملية بنجاح'
+Parcourir: تصفح
+'Photo': ' الصورة'
+'Présence du parents': 'حضور الولي'
+'Punitions & Absences': 'العقوبات والغيابات'
+'Punitions & Absences non traitées': 'قائمة العقوبات و الغيابات الغير مسوات'
+'Punitions et absences': 'العقوبات والغيابات'
+'Proposition d''avertissement': 'اقتراح انذار'
+Questionnaire: 'استجواب'
+Raison: السبب
+Rapport: تقرير
+Recherche: بحث
+'Recherche des mise a jour': 'البحث عن تحديث جديد'
+Referentiel: 'معطيات عامة'
+'Reglement absence': 'تسوية الغياب'
+Retard: تأخير
+retard: تأخير
+Règlement: 'طريقة التسوية'
+'Règlement Absence': 'تسوية غياب'
+'Règlement Aََbsence': 'تسوية الغياب'
+'Règlement Exclusion': 'تسوية طرد'
+'Règlement Retard': 'تسوية تأخير'
+Réinitialiser: 'إعادة تعيين'
+Révéler les absences pendant les devoirs: 'كشف الغيابات خلال الفروض'
+Scolarite: 'منظومة القيم'
+Scolarité: 'منظومة القيم'
+Section: الشعبة
+Sections: الشعب
+Suppression: حذف
+'Suppression Absence': 'حذف الغياب'
+'Suppression Exclusion': 'حذف الطرد'
+'Suppression Retard': 'حذف التأخير'
+Supprimer: حذف
+Surveillant: القيم
+Tous: الكل
+Traduction: الترجمة
+Type: نوع
+Tél: هاتف
+'Une erreur est produite lors de l importation': 'حدث خطأ أثناء إسترجاع المعطيات'
+"Une erreur s est produite lors de l'exportation\r\n": 'حدث خطأ أثناء حفظ المعطيات'
+'Une erreur s est produite lors de la mise a jour': 'حدث خطأ أثناء تحديث المعطيات'
+User: المستعمل
+Update base de données: 'تحديث قاعدة البيانات' 
+Update: 'تحديت'
+Valider: تثبيت
+'Veuillez entrer ici votre clé de license': 'الرجاء إدخال مفتاح التشغيل الخاص بك هنا'
+Ville: مدينة
+'Votre clé de license a été enregistré avec succès': 'تم تسجيل مفتاح الترخيص الخاص بك بنجاح'
+'Votre mise a jour a été terminé avec succès': 'تم استكمال تحيين المنظومة بنجاح'
+'Élément ajouté avec succes': 'تمت إضافة العنصر بنجاح'
+'Élément supprimé avec succes': 'تم حذف العنصر بنجاح'
+éléments: عناصر
+'Êtes-vous sûr de vouloir supprimer cette ligne?': 'هل أنت متأكد أنك تريد حذف هذا العنصر'
+Home: 'الصفحة الرئيسية'
+'Une erreur s est produite lors de l''exportation': 'حدث خطأ أثناء التصدير'
+'Veuillez vérifier l''existence d''un fichier ''eduserve.php''  dans C:\': 'الرجاء التحقق من وجود ملف "eduserve.php" في \\:C'
+'Nom Prénom': 'الإسم و اللقب'
+Username: 'اسم المستخدم'
+Email: 'البريد الإلكتروني'
+'Mot de passe': 'كلمة العبور'
+Activé: مفعل
+Roles: الأدوار
+Users: المستخدمون
+Administrateur: مدير
+Ordre: ع/ر
+Aucun: لاشيء
+'Veuillez sélectionner au moins un éléve': 'الرجاء إختيار تلميذ واحد على الأقل'
+Succès: نجاح
+Alert: تنبيه
+Info: إعلام
+Index: 'صفحة رئيسية'
+'Veuillez sélectionner au moins un élément': 'الرجاء إختيار عنصر واحد على الأقل'
+jour: يوم
+heure: ساعة
+Ajouter: إضافة
+'Réglement': 'تسوية'
+'Réglement Absence': 'تسوية غياب'
+'Réglement Retard': 'تسوية تأخير'
+'Réglement Exclusion': 'تسوية اقصاء'
+'Punition et absence non réglée': 'العقوبات والغيابات الغير مسوات'
+'Expultion de 1 jour': 'طرد بيوم'
+'Expultion de 3 jours': 'طرد 3 أيام'
+'Mettre à jour application': 'تحيين المنظومة'
+'Il y''a  des mise à jour en ligne': 'توجد تحيينات على المنظومة'
+'Mettre à jour': 'تحيين'
+Login to your account: تسجيل الدخول إلى حسابك
+Your credentials: بيانات الاعتماد الخاصة بك
+Logout: تسجيل خروج
+Password: كلمه السر
+Jour: اليوم
+Fermer: غلق
+Rapport Journalier: التقرير اليومي
+Absence Non Réglée: غيابات بدون تسوية
+Pas des mise à jour pour le moment: لا توجد تحديثات في الوقت الحالي

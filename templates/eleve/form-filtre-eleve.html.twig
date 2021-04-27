@@ -1,0 +1,64 @@
+{% if form.section is defined %}
+    {{ form_input("col-md-" ~ mdSection,"Section"|trans,form.section) }}
+{% endif %}
+{{ form_input("col-md-" ~ mdNiveau,"Niveau"|trans,form.niveau) }}
+{{ form_input("col-md-" ~ mdClasse,"Classe"|trans,form.classe) }}
+{% if form.eleve is defined %}
+    {{ form_input("col-md-" ~ mdEleve,"Eleve"|trans,form.eleve) }}
+{% endif %}
+
+
+<script>
+    {% if form.section is defined %}
+        {% set sections = form.vars.form.children.section.vars.choices %}
+        $(document).on('change', '#{{ idDiv }} #form_section', function () {
+            let niveau = $('#{{ idDiv }} #form_niveau');
+            niveau.empty();
+            let section = $(this).val();
+            {% for section in sections %}
+            if (section == {{ section.data.id }}) {
+                {% for niveau in section.data.niveaux %}
+                niveau.append('<option value="{{ niveau.id }}">{{ niveau }}</option>');
+                {% endfor %}
+                niveau.select2();
+            }
+            {% endfor %}
+            niveau.change();
+        });
+    {% endif %}
+
+    {% set niveaux = form.vars.form.children.niveau.vars.choices %}
+    $(document).on('change', '#{{ idDiv }} #form_niveau', function () {
+        let classe = $('#{{ idDiv }} #form_classe');
+        classe.empty();
+        let niveau = $(this).val();
+        {% for niveau in niveaux %}
+        if (niveau == {{ niveau.data.id }}) {
+            {% for classe in niveau.data.classes %}
+            classe.append('<option value="{{ classe.id }}">{{ classe }}</option>');
+            {% endfor %}
+            classe.select2();
+        }
+        {% endfor %}
+        classe.change();
+    });
+
+    {% if form.eleve is defined %}
+        {% set classes = form.vars.form.children.classe.vars.choices %}
+
+        $(document).on('change', '#{{ idDiv }} #form_classe', function () {
+            let classe = $(this).val();
+            let eleve = $('#{{ idDiv }} #form_eleve');
+            eleve.empty();
+            {% for classe in classes %}
+            if (classe == {{ classe.data.id }}) {
+                {% for eleve in classe.data.eleves %}
+                eleve.append('<option value="{{ eleve.id }}">{{ eleve }}</option>');
+                {% endfor %}
+                eleve.select2();
+            }
+            {% endfor %}
+            eleve.change();
+        });
+    {% endif %}
+</script>

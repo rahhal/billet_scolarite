@@ -1,0 +1,77 @@
+{% extends "impression/print.html.twig" %}
+{% set info = InfoGeneral() %}
+
+{% block title %}
+    <title>إنذار</title>
+{% endblock %}
+
+{% block header %}
+    {% include "@App/Impression/header.html.twig" %}
+{% endblock %}
+
+{% block content %}
+    <h1>إنذار</h1>
+    <br>
+    <table class="table-details">
+        <tbody>
+        <tr>
+            <td rowspan="6" style="width: 30%"></td>
+            <th>من مدير :</th>
+            <td>{{ info.etablissement ~ ' ' ~ info.ville }}</td>
+        </tr>
+        <tr>
+            <th>إلى السيد :</th>
+            <td>{{ punition.eleve.nomPere }}</td>
+        </tr>
+        <tr>
+            <th>ولي التلميذ(ة) :</th>
+            <td>{{ punition.eleve.nomPrenom }}</td>
+        </tr>
+        <tr>
+            <th>المرسم(ة) بـ :</th>
+            <td>{{ punition.eleve.classe }}</td>
+        </tr>
+        <tr>
+            <th>العنوان</th>
+            <td>{{ punition.eleve.adresseDomicile }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">و بعد يؤسفني إعلامكم بأنه وجه إلى ابنكم/ابنتكم إنذار للسبب التالي : {{ punition.raison }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <table>
+        <tbody>
+        <tr>
+            <th style="padding-top: 15px">مقترح الإنذار :</th>
+        </tr>
+        <tr>
+            <th>قد سجل هذا الإنذار بملفه(ها) و أرجوكم دعوته(ها) إلى مزيد الانضباط و احترام التراتيب المدرسية حتى لا يـ(تـ)كون
+                عرضة العقوبة أشد.
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <br><br><br><br>
+    <table id="tbl-signature">
+        <tbody>
+        <tr>
+            <td rowspan="4" width="70%"></td>
+            <td>و السلام</td>
+        </tr>
+        <tr>
+            <td>حرر بـ{{ info.ville }} في {{ date()|date('Y/m/d') }}</td>
+        </tr>
+        <tr>
+            <td>الإمضاء و الختم</td>
+        </tr>
+        <tr>
+            <td>المدير(ة) (3)</td>
+        </tr>
+        <tr>
+            <td>{{ info.directeur }}</td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

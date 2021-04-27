@@ -1,0 +1,16 @@
+{% if list is not defined %}<script>{% endif %}
+    $("#table-liste-niveau").bootstrapTable("{{ index is defined ? "updateRow" : "insertRow" }}", {
+        index: {{ index is defined ? index : 0 }},
+        row: {
+        id: '{{ niveau.id }}',
+        code: '{{ niveau.code }}',
+        libelle: '{{ niveau.libelle }}',
+        section: '{{ niveau.section }}',
+        action: "\n" +
+            '<a href="javascript:void(0);" data-id="{{ niveau.id }}" data-action="{{ path("niveau_delete", {"id": niveau.id}) }}"'+
+               'class="btn-delete-niveau"><i class="icon-trash"></i></a>'+
+            '<a href="#modal-edit-niveau" data-toggle="modal" data-id="{{ niveau.id }}" data-action="{{ path("niveau_edit", {"id": niveau.id}) }}"'+
+               'class="btn-edit-niveau"><i class="icon-pencil"></i></a>'
+        }
+    })
+{% if list is not defined %}</script>{% endif %}

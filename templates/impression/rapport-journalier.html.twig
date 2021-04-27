@@ -1,0 +1,127 @@
+{% extends "impression/print.html.twig" %}
+{% set info = InfoGeneral() %}
+
+{% block title %}
+    <title>التقرير اليومي</title>
+{% endblock %}
+
+{% block header %}
+    {% include "impression/header.html.twig" %}
+    <br>
+{% endblock %}
+{% block stylesheet %}
+    <style>
+        .header td{
+            border:0px;
+        }
+        /*.header table{
+            border: none;
+        }*/
+        .content th,td{
+            border:1px solid black;
+        }
+        .content table {
+            border-collapse: collapse;
+        }
+       .content th, td{
+            text-align: center;
+        }
+        td{
+            padding-right: 10px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <br>
+    <h2>التقرير اليومي لمكتب شؤون التلاميذ بتاريخ : {{ jour|date('Y/m/d') }}</h1>
+    <br>
+    <table >
+        <thead>
+        <tr>
+            <th rowspan="2">القسم</th>
+            <th rowspan="2">ع/ر</th>
+            <th rowspan="2">الإسم و اللقب</th>
+            <th colspan="4">الغيابات</th>
+            <th rowspan="2">التأخير</th>
+            <th rowspan="2">مادة الإقصاء وتاريخ التسوية</th>
+            <th colspan="2">الرفت</th>
+            <th rowspan="2">مبررات و تاريخ التسوية الغياب</th>
+        </tr>
+        <tr>
+            <th>بالساعة</th>
+            <th>باليوم</th>
+            <th>الساعة</th>
+            <th>الفترة</th>
+            <th>من</th>
+            <th>إلى</th>
+        </tr>
+
+        </thead>
+        <tbody>
+        {% for punition in punitions %}
+            <tr>
+                <td class="text-right">{{ punition.eleve.classe }}</td>
+                <td>{{ punition.eleve.numOrdre }}</td>
+                <td class="text-right">{{ punition.eleve.nomPrenom }}</td>
+                <td>
+                    {% if punition.type == 'absence' %}
+                        {{ punition.nbrHeure }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if punition.type == 'absence' %}
+                        {{ punition.nbrJoursAbsence(jourFerie) }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if punition.type == 'absence' %}
+                        {{ punition.heure ? punition.heure|date('H:i') : "" }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if punition.type == 'absence' %}
+                        {% if punition.heure %}
+                            {% if punition.heure|date('H') >= 12 %}
+                                مسائية
+                            {% else %}
+                                صباحية
+                            {% endif %}
+                        {% else %}
+                            متواصل
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if punition.type == 'retard' %}
+                        {{ punition.heure ? punition.heure|date('H:i') : "" }}
+                    {% endif %}
+                </td>
+                <td class="text-right">
+                    {% if punition.type == 'exclusion' %}
+                        {{ punition.matiere }}
+                        {% if punition.dateFin %}
+                            -
+                            {{ punition.dateFin|date('Y/m/d') }}
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if punition.type == 'expulsion' %}
+                        {{ punition.dateDebut|date('Y/m/d') }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if punition.type == 'expulsion' %}
+                        {{ punition.dateFin ? punition.dateFin|date('Y/m/d'):"" }}
+                    {% endif %}
+                </td>
+                <td class="text-right">
+                    {% if punition.type == 'absence' %}
+                        {{ punition.modeReglement|trans }} - {{ punition.dateFin ? punition.dateFin|date('Y/m/d'):"" }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

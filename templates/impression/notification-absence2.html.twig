@@ -1,0 +1,87 @@
+{% extends "impression/print.html.twig" %}
+{% set info = InfoGeneral() %}
+
+{% block title %}
+    <title>إعلام ثان بالغياب</title>
+{% endblock %}
+
+{% block header %}
+    {% include "impression/header.html.twig" %}
+{% endblock %}
+
+{% block content %}
+    <h1>إعلام ثان بالغياب</h1>
+    <br>
+    <table class="table-details">
+        <tbody>
+        <tr>
+            <th>من مدير :</th>
+            <td>{{ info.etablissement ~ ' ' ~ info.ville }}</td>
+        </tr>
+        <tr>
+            <th>إلى السيد :</th>
+            <td>{{ punition.eleve.nomPere }}</td>
+        </tr>
+        <tr>
+            <th>ولي التلميذ(ة) :</th>
+            <td>{{ punition.eleve.nomPrenom }}</td>
+        </tr>
+        <tr>
+            <th>المرسم(ة) بـ :</th>
+            <td>{{ punition.eleve.classe }}</td>
+        </tr>
+        <tr>
+            <th>العنوان</th>
+            <td>{{ punition.eleve.adresseDomicile }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <table class="border">
+        <tbody>
+        <tr>
+            <td style="padding-top: 15px">وبعد نعلمكم أن (ابنكم / ابنتكم) قد تغيب(ت) عن الدروس : </td>
+        </tr>
+        <tr>
+            <td>من يوم : {{ punition.dateDebut|date('Y/m/d') }}</td>
+        </tr>
+        <tr>
+            <td>إلى يوم : {{ punition.dateFin is not null ? punition.dateFin|date('Y/m/d') : '---' }}</td>
+        </tr>
+        <tr>
+            <td>وقد أعلمناكم بهذا الغياب بتاريخ {{ punition.dateNotification1 is not null ? punition.dateNotification1|date('Y/m/d') : '---' }} وطلبنا منكم الادلاء باسباب هذا التغيب : </td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 15px">و لم نتلق أي تبرير فالمرغوب منكم الحضور لدى الإدارة في أقرب الأجال وإلا سنضطر إلى إتخاذ ما يجب من الإجراءات القانونية. </td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <table>
+        <tbody>
+        <tr>
+            <td width="60%"></td>
+            <td width="40%" style="padding: 15px"><b>القيم العام</b></td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br><br><br><br>
+    <table class="border">
+        <tbody>
+        <tr>
+            <td style="padding-top: 15px">تبرير الغياب : ...................................................................................................................................................</td>
+
+        </tr>
+        <tr><td>.....................................................................................................................................................................</td></tr>
+        <tr><td>.....................................................................................................................................................................</td></tr>
+        <tr><td style="padding-bottom: 15px">.....................................................................................................................................................................</td></tr>
+        </tbody>
+    </table>
+    <br><br><br>
+    <table>
+        <tbody>
+        <tr><td>رقم المراسلة : .....................................................</td></tr>
+        <tr><td>تاريخ إصدارها : ...................................................</td></tr>
+        </tbody>
+    </table>
+{% endblock %}

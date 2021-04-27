@@ -1,0 +1,28 @@
+{% set mode = form.vars.value is not null ? "edit" : "add" %}
+{{ form_start(form,{attr : { action : action } } ) }}
+{% if mode == "edit" %}
+    <input type="hidden" id="id" value="{{ form.vars.value.id }}">
+    <input type="hidden" name="index">
+{% endif %}
+<div class="row">
+    {{ form_input("col-md-2","Code"|trans,form.code) }}
+    {{ form_input("col-md-3","Libellé"|trans,form.libelle) }}
+    {{ form_input("col-md-3","Section"|trans,form.section) }}
+    {{ form_input("col-md-2","Niveau Etude"|trans,form.niveau_etude) }}
+</div>
+<hr>
+
+<div class="text-right">
+    <button type="submit" class="btn btn-primary"><i
+                class="fa fa-{{ (mode == "edit" ? "edit" : "save") }}  position-left"></i> {{ (mode == "edit" ? "Modifier" : "Enregistrer")|trans }}
+    </button>
+</div>
+{{ form_end(form) }}
+{% if mode == "edit" %}
+    <script>
+        $("#modal-edit-niveau .select-search").select2();
+        $("#modal-edit-niveau .select").select2({minimumResultsForSearch: Infinity});
+
+
+    </script>
+{% endif %}

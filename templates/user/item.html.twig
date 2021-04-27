@@ -1,0 +1,14 @@
+<tr id="{{ user.id }}">
+    <td>{{ user.nomPrenom }}</td>
+    <td>{{ user.username }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.enabled|viewBooleanValue|raw }}</td>
+    {# <td>{{ user.hasRole('ROLE_ADMIN')|viewBooleanValue|raw }}</td> #}
+
+    <td id="{{ user.id }}">
+            <a href="javascript:void(0);" data-action="{{ path("user_user_delete", {"id": user.id}) }}"
+               class="btn-delete"><i class="icon-trash"></i></a>
+            <a href="#modal-edit" data-toggle="modal" data-action="{{ path("user_user_edit", {"id": user.id}) }}"
+               class="btn-edit"><i class="icon-pencil"></i></a>
+    </td>
+</tr>

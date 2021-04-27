@@ -1,0 +1,35 @@
+ {# <div class="breadcrumb-line"> #}
+                    {# <ul class="breadcrumb">
+                        <li><a href="index.html"><i class="icon-home2 position-left"></i> {{ "Home"|trans }}</a></li>
+                        <li class="active">{{ "العقوبات والغيابات"|trans }}</li>
+                    </ul> #}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <ul class="breadcrumb-elements">
+                            <li id="notification-punitions-absences"
+                            {% if not app.session.get('notification-punitions-absences') %}
+                                style="display: none"
+                            {% endif %}
+                            ><a class="red"
+                                                                        href="{{ path('notification_punitions_absences') }}"
+                                                                        target="_blank"><i
+                                            class="icon-alert position-left"></i> {{ "Punition et absence non réglée"|trans }}
+                                </a></li>
+                            <li><a href="javascript:void(0);" id="export_database"><i
+                                            class="icon-database-export position-left"></i> {{ "Export base des données"|trans }}
+                                </a></li>
+                            <li><a href="javascript:void(0);" id="import_database" onclick="$('#file-sql').click();"><i
+                                            class="icon-database-upload position-left"></i> {{ "Importbase des données"|trans }}
+                                </a>
+                                <form action="{{ path('import_database') }}" method="post" enctype="multipart/form-data"
+                                      hidden id="import-database">
+                                    <input type="file" accept=".sql" id="file-sql" name="fileSQL">
+                                </form>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0);" id="update_database"><i
+                                            class="icon-database-refresh position-left"></i> {{ "Mettre à jour base des données"|trans }}
+                                </a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                {# </div> #}

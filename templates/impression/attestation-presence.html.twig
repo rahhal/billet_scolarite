@@ -1,0 +1,58 @@
+{% extends "impression/print.html.twig" %}
+{% set info = InfoGeneral() %}
+
+{% block title %}
+    <title>شهادة حضور</title>
+{% endblock %}
+
+{% block header %}
+    {% include "impression/header.html.twig" %}
+{% endblock %}
+
+{% block content %}
+    {# <p style="width: 100%;text-align: left">عدد : {{ info.nbrAttestationPresence }}</p> #}
+    <h1>شهادة حضور</h1>
+    <table>
+        <tbody>
+        <tr>
+            <td>يشهد مدير (1) {{ info.etablissement ~ ' ' ~ info.ville }}</td>
+        </tr>
+        <tr>
+            <td>أن التلميذ (ة): {{ eleve.nomPrenom }}</td>
+        </tr>
+        <tr>
+            <td>المولود (ة) في: {{ eleve.dateNaissance|date('Y/m/d') }}</td>
+        </tr>
+        <tr>
+            <td>مرسم (ة) بالمدرسة*/ المعهد المذكور(ة)* أعلاه و يزاول دراسته (ها) بـ (2) {{ eleve.classeAnneeActuelle }}</td>
+        </tr>
+        <tr>
+            <td>سلمت هذه الشهادة بطلب من المعني (ة) بالأمر قصد: {{ raison }}</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br><br><br>
+    <table id="tbl-signature">
+        <tbody>
+        <tr>
+            <td rowspan="4" width="70%"></td>
+            <td>حرر بـ{{ info.ville }}  في {{ date()|date('Y/m/d') }}</td>
+        </tr>
+        <tr>
+            <td>الإمضاء و الختم</td>
+        </tr>
+        <tr>
+            <td>المدير(ة) (3)</td>
+        </tr>
+        <tr><td>{{ info.directeur }}</td></tr>
+        </tbody>
+    </table>
+    <p>----------------------------------------------------</p>
+    <span>(1) بيان اسم المؤسسة التربوية</span><br>
+    <span>(2) يذكر الفصل بلسان القلم</span><br>
+    <span>(3) يذكر الإسم و اللقب و الصفة</span><br>
+    <span>* يشطب الزائد</span>
+{% endblock %}

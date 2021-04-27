@@ -1,0 +1,7 @@
+{% for eleve in eleves %}
+    {{ include("eleve/item.html.twig",{"eleve":eleve}) }}
+{% else %}
+    <tr id="zero-item-eleve">
+        <td class="text-center" colspan="28">{{ "Aucun enregistrement trouvé"|trans }}</td>
+    </tr>
+{% endfor %}

@@ -1,0 +1,27 @@
+{% set mode = form.vars.value is not null ? "edit" : "add" %}
+{{ form_start(form,{attr : { action : action } } ) }}
+{% if mode == "edit" %}
+    <input type="hidden" id="id" value="{{ form.vars.value.id }}">
+    <input type="hidden" name="index">
+{% endif %}
+<div class="row">
+    {{ form_input("col-md-3","Date Début"|trans,form.debut) }}
+    {{ form_input("col-md-3","Date Fin"|trans,form.fin) }}
+    {{ form_input("col-md-6","Libellé"|trans,form.libelle) }}
+</div>
+<hr>
+
+<div class="text-right">
+    <button type="submit" class="btn btn-primary"><i
+                class="fa fa-{{ (mode == "edit" ? "edit" : "save") }}  position-left"></i> {{ (mode == "edit" ? "Modifier" : "Enregistrer")|trans }}
+    </button>
+</div>
+{{ form_end(form) }}
+{% if mode == "edit" %}
+    <script>
+        $("#modal-edit-jourferie .select-search").select2();
+        $("#modal-edit-jourferie .select").select2({minimumResultsForSearch: Infinity});
+
+
+    </script>
+{% endif %}

@@ -1,0 +1,95 @@
+<script>
+    {% if autoImpression is defined %}
+        let ids=[];
+        {% for punition in punitionsAbsences %}
+        {% if punition.type in ['retard','exclusion','absence'] %}
+            ids.push({{ punition.id }});
+            $("#table-liste-eleve").bootstrapTable('remove', {
+                field: 'id',
+                values: '{{ punition.eleve.id }}'
+            });
+            {% endif %}
+        {% endfor %}
+        impressionTous('',ids);
+    {% else %}
+
+        {% for absence in punitionsAbsences %}{% if absence.type == 'absence' %}
+        $("#table-liste-absence").bootstrapTable("{{ index is defined ? "updateRow" : "insertRow" }}", {
+            index: {{ index is defined ? index : 0 }},
+            row: {
+                id: '{{ absence.id }}',
+                x: '<input type="checkbox" class="styled chk-eleves" value="{{ absence.id }}">',
+                eleve: '{{ absence.eleve }}',
+                dateDebut: '{{ absence.dateDebut|date("d/m/Y") }} {{ absence.heure is null ? "" : absence.heure|date("H:i") }}',
+                nbrJour: '{{ absence.nbrJour ? absence.nbrJour ~ ("jour"|trans) : "" }} {{ absence.nbrHeure ? absence.nbrHeure ~ ("heure"|trans): "" }}',
+                action: "\n" +
+                {% if absence.modeReglement is null %}
+                '<a href="#modal-reglement" title="{{ "Règlement Absence"|trans }}" onclick="$(\'#id-punition-absence\').val({{ absence.id }});$(\'#modal-reglement .modal-title\').html(\'{{ "Règlement Absence"|trans }}\');document.getElementById(\'date-regle\').valueAsDate = new Date();" data-toggle="modal"><i class="icon-pencil6"></i></a>'
+                {% if absence.createdBy == app.user %}+
+                '<a href="javascript:void(0);" style="margin-left: 10px;" title="{{ "Suppression Absence"|trans }}" data-id="{{ absence.id }}" data-action="{{ path("delete_event", {"id": absence.id}) }}"' +
+                'class="btn-delete-absence"><i class="icon-trash"></i></a>'
+                {% endif %}
+                {% else %}
+                '<a href="#" class="print-billet-entree" data-href="{{ path('print_billet_entree',{id:absence.id}) }}" onclick="removeFromBootstrapTable(\'absence\',{{ absence.id }});" style="margin-left: 10px;" title="{{ "Impression Billet"|trans }}"><i class="icon-printer"></i></a>'
+                {% endif %}
+            }
+        });
+        {% endif %}
+        {% endfor %}
+
+        {% for exclusion in punitionsAbsences%}{%if exclusion.type == 'exclusion' %}
+        $("#table-liste-exclusion").bootstrapTable("{{ index is defined ? "updateRow" : "insertRow" }}", {
+            index: {{ index is defined ? index : 0 }},
+            row: {
+                id: '{{ exclusion.id }}',
+                x: '<input type="checkbox" class="styled chk-eleves" value="{{ exclusion.id }}">',
+                eleve: '{{ exclusion.eleve }}',
+                dateDebut: '{{ exclusion.dateDebut|date("d/m/Y") }} {{ exclusion.heure is null ? "" : exclusion.heure|date("H:i") }}',
+                enseignant: '{{ exclusion.enseignant }} <small>{{ exclusion.matiere }}</small>',
+                raison: '{{ exclusion.raison|nl2br }}',
+                action: "\n" +
+                {% if exclusion.modeReglement is null %}
+                '<a href="#modal-reglement" title="{{ "Règlement Exclusion"|trans }}" onclick="$(\'#id-punition-absence\').val({{ exclusion.id }});$(\'#modal-reglement .modal-title\').html(\'{{ "Règlement Exclusion"|trans }}\');document.getElementById(\'date-regle\').valueAsDate = new Date();" data-toggle="modal"><i class="icon-pencil6"></i></a>'
+                {% if exclusion.createdBy == app.user %}+
+                '<a href="javascript:void(0);" style="margin-left: 10px;" title="{{ "Suppression Exclusion"|trans }}" data-id="{{ exclusion.id }}" data-action="{{ path("delete_event", {"id": exclusion.id}) }}"' +
+                'class="btn-delete-exclusion"><i class="icon-trash"></i></a>'
+                {% endif %}
+                {% else %}
+                '<a href="#" class="print-billet-entree" data-href="{{ path('print_billet_entree',{id:exclusion.id}) }}" onclick="removeFromBootstrapTable(\'exclusion\',{{ exclusion.id }});" style="margin-left: 10px;" title="{{ "Impression Billet"|trans }}"><i class="icon-printer"></i></a>'
+                {% endif %}
+            }
+        });
+        {% endif %}
+        {% endfor %}
+
+        {#{% for retard in punitionsAbsences if retard.type == 'retard' %}
+        $("#table-liste-retard").bootstrapTable("{{ index is defined ? "updateRow" : "insertRow" }}", {
+            index: {{ index is defined ? index : 0 }},
+            row: {
+                id: '{{ retard.id }}',
+                x: '<input type="checkbox" class="styled chk-eleves" value="{{ retard.id }}">',
+                eleve: '{{ retard.eleve }}',
+                dateDebut: '{{ retard.dateDebut|date("d/m/Y") }} {{ retard.heure is null ? '' : retard.heure|date("H:i") }}',
+                action: "\n" +
+                {% if retard.modeReglement is null %}
+                '<a href="#modal-reglement" title="{{ "Règlement Retard"|trans }}" onclick="$(\'#id-punition-absence\').val({{ retard.id }});$(\'#modal-reglement .modal-title\').html(\'{{ "Règlement Retard"|trans }}\');document.getElementById(\'date-regle\').valueAsDate = new Date();" data-toggle="modal"><i class="icon-pencil6"></i></a>'
+                {% if retard.createdBy == app.user %}+
+                '<a href="javascript:void(0);" title="{{ "Suppression Retard"|trans }}" style="margin-left: 10px;" data-id="{{ retard.id }}" data-action="{{ path("delete_event", {"id": retard.id}) }}"' +
+                'class="btn-delete-retard"><i class="icon-trash"></i></a>'
+                {% endif %}
+                {% else %}
+                '<a href="{{ path('print_billet_entree',{id:retard.id}) }}" onclick="removeFromBootstrapTable(\'retard\',{{ retard.id }});" target="_blank" style="margin-left: 10px;" title="{{ "Impression Billet"|trans }}"><i class="icon-printer"></i></a>'
+                {% endif %}
+            }
+        });
+        {% endfor %}#}
+
+    {% endif %}
+
+    function removeFromBootstrapTable(type,id) {
+        $('#table-liste-'+type).bootstrapTable('remove', {
+            field: 'id',
+            values: id.toString()
+        });
+    }
+</script>

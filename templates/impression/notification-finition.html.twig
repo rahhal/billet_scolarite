@@ -1,0 +1,73 @@
+{% extends "impression/print.html.twig" %}
+{% set info = InfoGeneral() %}
+
+{% block title %}
+    <title>إعلام بالتشطيب</title>
+{% endblock %}
+
+{% block header %}
+    {% include "impression/header.html.twig" %}
+{% endblock %}
+
+{% block content %}
+    <h1>إعلام بالتشطيب</h1>
+    <br>
+    <table class="table-details">
+        <tbody>
+        <tr>
+            <th>من مدير :</th>
+            <td>{{ info.etablissement }} {{ info.ville }}</td>
+        </tr>
+        <tr>
+            <th>إلى السيد :</th>
+            <td>{{ punition.eleve.nomPere }}</td>
+        </tr>
+        <tr>
+            <th>ولي التلميذ(ة) :</th>
+            <td>{{ punition.eleve.nomPrenom }}</td>
+        </tr>
+        <tr>
+            <th>المرسم(ة) بـ :</th>
+            <td>{{ punition.eleve.classe }}</td>
+        </tr>
+        <tr>
+            <th>العنوان</th>
+            <td>{{ punition.eleve.adresseDomicile }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <table class="border">
+        <tbody>
+        <tr>
+            <td style="padding-top: 30px;text-align: center !important;">و بعد يؤسفني إعلامكم بأنه وقع التشطيب على إسم</td>
+        </tr>
+        <tr>
+            <td>منظوركم ....................................................................................................................... من القائمة الإسمية و هذا</td>
+        </tr>
+        <tr>
+            <td style="padding-bottom: 30px">بتاريخ ................................................................ للسبب التالي.........................................................................</td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <table>
+        <tbody>
+        <tr>
+            <th width="60%"></th>
+            <th width="40%" style="padding: 15px">المدير(ة)</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td>{{ info.directeur }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br><br><br><br>
+    <table>
+        <tbody>
+        <tr><td>إطلعت عليه</td></tr>
+        <tr><td>إمضاء الولي : ...................................................</td></tr>
+        </tbody>
+    </table>
+{% endblock %}

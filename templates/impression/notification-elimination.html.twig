@@ -1,0 +1,79 @@
+{% extends "impression/print.html.twig" %}
+{% set info = InfoGeneral() %}
+
+{% block title %}
+    <title>إعلام برفت مؤقت</title>
+{% endblock %}
+
+{% block header %}
+    {% include "impression/header.html.twig" %}
+{% endblock %}
+
+{% block content %}
+    <h1 style="text-align: center;font-size: 32px"><b>إعلام برفت مؤقت</b></h1>
+    <br>
+    <table class="table-details">
+        <tbody>
+        <tr>
+            <th>من مدير :</th>
+            <td>{{ info.etablissement }} {{ info.ville }}</td>
+        </tr>
+        <tr>
+            <th>إلى السيد :</th>
+            <td>{{ punition.eleve.nomPere }}</td>
+        </tr>
+        <tr>
+            <th>ولي التلميذ(ة) :</th>
+            <td>{{ punition.eleve.nomPrenom }}</td>
+        </tr>
+        <tr>
+            <th>المرسم(ة) بـ :</th>
+            <td>{{ punition.eleve.classe }}</td>
+        </tr>
+        <tr>
+            <th>العنوان</th>
+            <td>{{ punition.eleve.adresseDomicile }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <table>
+        <tbody>
+        <tr>
+            <th style="padding-top: 15px">و بعد, يؤسفني إعلامكم بانه تقرّر رفت ابنكم/ابنتكم لمدة :</th>
+        </tr>
+        <tr>
+            <th>بداية من يوم: {{ punition.dateDebut is not null ? punition.dateDebut|date('Y/m/d') : '---' }} إلى يوم: {{ punition.dateFin is not null ? punition.dateFin|date('Y/m/d') : '---' }}</th>
+        </tr>
+        <tr>
+            <th>للسبب التالي : {{ punition.raison }}</th>
+        </tr>
+        <tr>
+            <th>هذا و ألفت نظركم إلى أن هذه العقوبة سجّلت بملفه(ها) و أرجوكم دعوته(ها) إلى الانضباط و احترام التراتيب
+                المدرسية حتى لا يكون عرضة لعقوبة أشد .
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <br><br><br><br>
+    <table id="tbl-signature">
+        <tbody>
+        <tr>
+            <th>خاص بالولي*</th>
+            <td>حرر بـ{{ info.ville }} في {{ date()|date('Y/m/d') }}</td>
+        </tr>
+        <tr>
+            <th>في</th>
+            <th>الإمضاء و الختم</th>
+        </tr>
+        <tr>
+            <th>اطلعت عليه و أمضيت أسفله</th>
+            <th>المدير(ة) (3)</th>
+        </tr>
+        <tr>
+            <th>الإمضاء</th>
+            <td>{{ info.directeur }}</td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

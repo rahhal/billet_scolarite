@@ -1,0 +1,19 @@
+<tr id="{{ etablissement.id }}">
+    <td>{{ etablissement.ministere }}</td>
+    <td>{{ etablissement.mandoubia }}</td>
+    <td>{{ etablissement.code }}</td>
+    <td>{{ etablissement.nom }}</td>
+    <td>{{ etablissement.gouvernorat }}</td>
+    <td>{{ etablissement.ville }}</td>
+    <td>{{ etablissement.adresse }}</td>
+    <td>{{ etablissement.tel }}</td>
+    <td>{{ etablissement.fax }}</td>
+</tr>
+ <tr  id="{{ etablissement.id }}"> 
+    <td  class="text-right" colspan="10">
+           <button class="btn"> <a href="javascript:void(0);" data-id="{{ etablissement.id }}" data-action="{{ path("etablissement_delete", {"id": etablissement.id}) }}"
+               class="btn-delete-etablissement"><i class="icon-trash" style="margin-left: 1em;"></i>حذف</a></button>
+            <button class="btn"><a href="#modal-edit-etablissement" data-toggle="modal" data-action="{{ path("etablissement_edit", {"id": etablissement.id}) }}"
+               class="btn-edit-etablissement"><i class="icon-pencil"style="margin-left: 1em;"></i>تغيير</a></button>
+    </td>
+</tr>

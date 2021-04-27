@@ -1,0 +1,112 @@
+<div class="row" >
+    <div class="col-md-1">
+        <label>{{ "Niveau"|trans }}</label>
+    </div>
+    <div class="col-md-4">
+{{ form_widget(form.niveau) }}
+    </div>
+    <div class="col-md-2">
+        <label>{{ "Classe"|trans }}</label>
+    </div>
+    <div class="col-md-5">
+        {{ form_widget(form.classe) }}
+    </div>
+    </div>
+    <div class="row" style="margin-top: 10px;background-color: #dad7d7;border: 1px solid #ddd;padding: 10px;border-radius: 3px;">
+      {# <div class="col-md-4">
+         <div class="btn-group">
+             <button type="button" class="btn bg-teal-400 btn-labeled dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><b><i class="icon-plus2"></i></b> {{ "Actions"|trans }} <span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right"> 
+                <li class="dropdown-submenu dropdown-submenu-hover">
+                    <a href="#"><i class="icon-plus2"></i> {{ "Ajouter"|trans }}</a>
+                    <ul class="dropdown-menu" style="left: -100%;">
+                        <li><a href="#" onclick="addPunitionAbsence('absence');">{{ "Nouvelle Absence"|trans }}</a></li>
+                        <li><a href="#" onclick="addPunitionAbsence('retard');">{{ "Nouveau Retard"|trans }}</a></li>
+                        <li><a href="#" onclick="addPunitionAbsence('exclusion');">{{ "Nouvelle Exclusion"|trans }}</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown-submenu dropdown-submenu-hover">
+                    <a href="#"><i class="icon-hammer-wrench"></i> {{ "Réglement"|trans }}</a>
+                    <ul class="dropdown-menu" style="left: -100%;">
+                        <li><a href="#" onclick="reglementTous('absence');">{{ "Réglement Absence"|trans }}</a></li>
+                        <li><a href="#" onclick="reglementTous('retard');">{{ "Réglement Retard"|trans }}</a></li>
+                        <li><a href="#" onclick="reglementTous('exclusion');">{{ "Réglement Exclusion"|trans }}</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div> 
+     </div> #}
+
+         <div class="btn-group" style="margin-top: 20px">
+                    <button type="button" class="btn btn-rounded bg-success-600" style="margin-right: 10px" onclick="addPunitionAbsence('absence');"><i class="fa fa-plus" style="margin-left: 1rem;"></i> {{ "Nouvelle Absence"|trans }}</button>
+                    <button type="button" class="btn btn-rounded bg-teal" style="margin-right: 30px" onclick="addPunitionAbsence('retard');"><i class="fa fa-plus" style="margin-left: 1rem;"></i> {{ "Nouveau Retard"|trans }}</button>
+                    <button type="button" class="btn btn-rounded bg-danger-600" style="margin-right: 30px" onclick="addPunitionAbsence('exclusion');"><i class="fa fa-plus" style="margin-left: 1rem;"></i> {{ "Nouvelle Exclusion"|trans }}</button>
+
+         </div>
+     {# </div> #}
+</div>
+<div class="row" style="margin-top: 10px">
+    <div class="col-md-{{ mdEleve }}">
+        {# <table class="table table-striped" id="table-liste-eleve" data-toggle="table" data-pagination="true" data-search="true"> #}
+                   <table class="table table-striped" id="table-liste-eleve" data-toggle="table" data-search="true">
+            <thead>
+            <tr>
+                <th data-field="id"></th>
+                <th data-field="x"><input type="checkbox" class="_styled" onclick="$('#{{ idDiv }} .chk-eleves').prop('checked',$(this).is(':checked')).uniform();"></th>
+                <th data-field="ordre" style="width: 60px;">{{ "Ordre"|trans }}</th>
+                <th data-field="eleve">{{ "Nom Prénom"|trans }} <i style="cursor: pointer;margin-right: 10px" class="fa fa-refresh" onclick="loadEleve($('#{{ idDiv }} #form_classe').val());"></i></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    {% set niveaux = form.vars.form.children.niveau.vars.choices %}
+    $(document).on('change', '#{{ idDiv }} #form_niveau', function () {
+        let classe = $('#{{ idDiv }} #form_classe');
+        classe.empty();
+        let niveau = $(this).val();
+        {% for niveau in niveaux %}
+        if (niveau == {{ niveau.data.id }}) {
+            {% for classe in niveau.data.classes %}
+            classe.append('<option value="{{ classe.id }}">{{ classe }}</option>');
+            {% endfor %}
+            classe.select2();
+        }
+        {% endfor %}
+        classe.change();
+    });
+
+    {% set classes = form.vars.form.children.classe.vars.choices %}
+    $(document).on('change', '#{{ idDiv }} #form_classe', function () {
+        loadEleve($(this).val());
+    });
+
+    function loadEleve(classe) {
+        $("#table-liste-eleve").LoadingOverlay("show", {
+            image: "",
+            fontawesome: "icon-spinner3 spinner"
+        });
+        $("#table-liste-eleve").bootstrapTable('removeAll');
+        $.ajax({
+            url: "{{ path('eleves') }}",
+            data: {
+                'classe': classe,
+                'filtre':true
+            },
+            dataType:'json',
+            complete: function () {
+                $("#table-liste-eleve").LoadingOverlay("hide", true);
+            },
+            success: function (eleves) {
+                $("#table-liste-eleve").bootstrapTable("load", eleves);
+                $("#table-liste-eleve").bootstrapTable("hideColumn", "id");
+                $("#table-liste-eleve .styled").uniform();
+            }
+        });
+    }
+</script>

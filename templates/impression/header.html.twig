@@ -1,0 +1,23 @@
+<table width="100%" style="padding-bottom: 30px">
+        <tbody>
+        <tr>
+            <td style="width: 200px;"><b>الجمهورية التونسية</b></td>
+            <td rowspan="4"
+                style="text-align: left"><b>{% if anneescolaire is not defined or anneescolaire %}السنة الدراسية : {{ info.annee }}{% endif %}</b></td>
+        </tr>
+        <tr>
+            <td><b>{{ info.ministere }}<b></td>
+        </tr>
+        <tr>
+            <td><b>{{ info.administration }} بـ{{ info.ville }}</b></td>
+        </tr>
+        {% if etablissement is not defined or etablissement %}
+            <tr>
+                <td><b>{{ info.etablissement }}</b></td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td></td>
+        </tr>
+    </tbody>
+</table>

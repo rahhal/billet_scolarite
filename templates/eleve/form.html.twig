@@ -1,0 +1,33 @@
+{% set mode = form.vars.value is not null ? "edit" : "add" %}
+{{ form_start(form,{attr : { action : action } } ) }}
+{% if mode == "edit" %}
+    <input type="hidden" id="id" value="{{ form.vars.value.id }}">
+{% endif %}
+<div class="row">
+    {{ form_input("col-md-2","Identifiant"|trans,form.identifiant) }}
+    {{ form_input("col-md-3","Nom & Prénom"|trans,form.nomprenom) }}
+    {{ form_input("col-md-2","Date Naissance"|trans,form.date_naissance) }}
+    {{ form_input("col-md-3","Lieu Naissance"|trans,form.lieu_naissance) }}
+    {{ form_input("col-md-2","CIN"|trans,form.cin) }}
+    {{ form_input("col-md-3","Etablissement Année Dernière"|trans,form.etablissementAnneeDerniere) }}
+    {{ form_input("col-md-3","Classe Année Dernière"|trans,form.classe_annee_derniere) }}
+    {{ form_input("col-md-3","Classe Année Actuelle"|trans,form.classeAnneeActuelle) }}
+    {{ form_input("col-md-3","Sexe"|trans,form.sexe) }}
+    {{ form_input("col-md-1","N° Ordre"|trans,form.num_ordre) }}
+</div>
+<hr>
+
+<div class="text-right">
+    <button type="submit" class="btn btn-primary"><i
+                class="fa fa-{{ (mode == "edit" ? "edit" : "save") }}  position-left"></i> {{ (mode == "edit" ? "Modifier" : "Enregistrer")|trans }}
+    </button>
+</div>
+{{ form_end(form) }}
+{% if mode == "edit" %}
+    <script>
+        $("#modal-edit-eleve .select-search").select2();
+        $("#modal-edit-eleve .select").select2({minimumResultsForSearch: Infinity});
+
+
+    </script>
+{% endif %}
