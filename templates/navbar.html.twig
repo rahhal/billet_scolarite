@@ -45,9 +45,9 @@
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-right">
-                    {% if is_granted('ROLE_ADMIN') %}
+                   {#  {% if is_granted('ROLE_ADMIN') %}
                          {# <li><a href="{{ path('git_pull') }}"><i class="icon-loop"></i> <span>{{ "Recherche des mise a jour"|trans }}</span></a></li> #}
-                        <li><a href="#"><i class="icon-loop"></i> <span>{{ "Recherche des mise a jour"|trans }}</span></a></li>
+                        {# <li><a href="#"><i class="icon-loop"></i> <span>{{ "Recherche des mise a jour"|trans }}</span></a></li> #}
 
                         {# {% if not app.session.get('check-license') %}
                             <li>
@@ -55,8 +55,8 @@
                                             class="icon-key text-primary"></i><span>{{ "Clé License"|trans }}</span></a>
                             </li> 
                         {% endif %} #}
-                        <li class="divider"></li>
-                    {% endif %}
+                        {# <li class="divider"></li>
+                    {% endif %} #} 
                     <li><a href="{{ path('app_logout') }}"><i class="icon-switch2"></i> {{ "Logout"|trans }}</a></li>
 
                 </ul>

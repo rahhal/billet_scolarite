@@ -50,7 +50,7 @@ class GeneraleService
         $joursFeries = $this->em->createQueryBuilder()
             ->select('jour_ferie')
             ->from(JourFerie::class, 'jour_ferie')
-            ->where('jour_ferie.anneeScolaire = :annee')
+            ->where('jour_ferie.annee_scolaire = :annee')
             ->setParameter('annee', $annee);
 
         if ($date)

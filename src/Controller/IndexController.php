@@ -499,9 +499,6 @@ class IndexController extends AbstractController
              'ident' => $qb
          ]);
      }
- 
-
-
     /**
      * @Route("/export-database", name="export_database")
      */
