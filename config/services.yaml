@@ -17,7 +17,7 @@ parameters:
         billet: '#23c706'
     app.locales:
         - { code: fr, name: Français, tag: fr }
-        - { code: ar, name: Arabe, tag: sa }
+        - { code: ar, name: Arabe, tag: tn }
 
 services:
     # default configuration for services in *this* file

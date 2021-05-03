@@ -51,10 +51,12 @@ class EleveController extends AbstractController
         if ($request->isXmlHttpRequest()) {
 
             $content = $this->renderView("eleve/liste.html.twig", ["eleves" => $eleves]);
-            $pagination = $this->renderView("knp_paginator:pagination_render.html.twig", ["items" => $eleves]);
+            $pagination = $this->renderView("knp_paginator/pagination_render.html.twig", ["items" => $eleves]);
             $countItem = count($_eleves);
 
-            return new JsonResponse(compact(["content", "pagination", "data", "countItem"]));
+            // return new JsonResponse(compact(["content", "pagination", "data", "countItem"]));
+            return new JsonResponse(compact(["content", "pagination", "countItem"]));
+
         }
 
         return $this->render("eleve/index.html.twig", [
